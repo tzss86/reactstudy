@@ -21,5 +21,114 @@
 |更新|render|||
 |卸载|componentWillUnmount|发生在组件即将卸载|在这里清除计时器，清理DOM元素，解除事件绑定|
 
-#### 2. 例子
+#### 2. 例子：demo1
+这个例子主要是将上面的组件生命周期方法全部执行一次，巩固概念。
+* `mkdir std3 && cd std3`
+* `mkdir demo1`
+* `npm init -y`
+* `npm install --save-dev babel-cli babel-preset-react`
+* 配置`package.json`的babel预设
+* 添加`"build-demo1": "./node_modules/.bin/babel demo1/jsx -d demo1/js -w"`
 
+添加HTML文件
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="js/react.js"></script>
+    <script src="js/react-dom.js"></script>
+  </head>
+  <body>
+    <div id="content"></div>
+    <script src="js/logger.js"></script>
+    <script src="js/content.js"></script>
+    <script src="js/script.js"></script>
+  </body>
+</html>
+```
+添加script.jsx
+```javascript
+ReactDOM.render(
+    <div>
+        <Content />
+    </div>,
+    document.getElementById('content')
+)
+```
+添加content.jsx
+```javascript
+class Content extends React.Component {
+    constructor(props){
+        super(props);
+        this.launchClock()
+        this.state = {
+            counter:0,
+            currentTime: (new Date()).toLocaleString()
+        };
+    }
+    launchClock(){
+        setInterval(()=>{
+            this.setState({
+                counter:++this.state.counter,
+                currentTime: (new Date()).toLocaleString()
+            });
+        },1000);
+    }
+    render(){
+        if (this.state.counter > 2) {//当counter大于2后，将<Logger>去除，会导致调用<Logger>的componentWillUnmount
+            return <div />
+        } else {
+            return <Logger time={this.state.currentTime} />
+        }
+    }
+}
+```
+添加logger.jsx
+```javascript
+class Logger extends React.Component {
+    constructor(props) {
+        super(props);
+        console.log('constructor');
+    }
+    componentWillMount() {
+        console.log('componentWillMount is triggered');
+    }
+    componentDidMount(e) {
+        console.log('componentDidMount is triggered');
+        console.log('DOM node: ', ReactDOM.findDOMNode(this));
+    }
+    componentWillReceiveProps(newProps) {
+        console.log('componentWillReceiveProps is triggered');
+        console.log('new props: ', newProps);
+    }
+    shouldComponentUpdate(newProps, newState) {
+        console.log('shouldComponentUpdate is triggered');
+        console.log('new props: ', newProps);
+        console.log('new state: ', newState);
+        return true;
+    }
+    componentWillUpdate(newProps, newState) {
+        console.log('componentWillUpdate is triggered');
+        console.log('new props: ', newProps);
+        console.log('new state: ', newState);
+    }
+    componentDidUpdate(oldProps, oldState) {
+        console.log('componentDidUpdate is triggered');
+        console.log('old props: ', oldProps);
+        console.log('old state: ', oldState);
+    }
+    componentWillUnmount() {
+        console.log('componentWillUnmount');
+    }
+    render() {
+        console.log('rendering... Display');
+        return (
+          <div>{this.props.time}</div>
+        )
+    }
+}
+```
+执行`npm run build-demo1`:转换jsx为js
+执行`http-server`运行`localhost:8080`
+
+<img src="./images/p1_7.png" width="50%" height="auto"/>
