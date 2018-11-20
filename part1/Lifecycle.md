@@ -132,3 +132,75 @@ class Logger extends React.Component {
 执行`http-server`运行`localhost:8080`
 
 <img src="./images/p1_7.png" width="50%" height="auto"/>
+
+#### 3. 例子：demo2
+添加HTML文件
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="js/react.js"></script>
+    <script src="js/react-dom.js"></script>
+  </head>
+  <body>
+    <div>
+      <div id="content"></div>
+      <script src="js/note.js"></script>
+      <script src="js/script.js"></script>
+    </div>
+  </body>
+</html>
+```
+
+添加script.jsx
+```javascript
+let secondsLeft = 5;
+let interval = setInterval(()=>{
+    if(secondsLeft == 0){
+        ReactDOM.render(
+            <div>
+                在 {secondsLeft} 秒后，Note 被移除
+            </div>,
+            document.getElementById('content')
+        );
+        clearInterval(interval);
+    } else {
+        ReactDOM.render(
+          <div>
+            <Note secondsLeft={secondsLeft}/>
+          </div>,
+          document.getElementById('content')
+        )
+    }
+    secondsLeft--
+},1000);
+```
+添加note.jsx
+```javascript
+class Note extends React.Component {
+    confirmLeave(e) { 
+        let message = '你是否想离开？';
+        e.returnValue = message;
+        return message;
+    }
+    componentDidMount() {
+        console.log('componentDidMount');
+        window.addEventListener('beforeunload', this.confirmLeave);
+    }
+    componentWillUnmount() {
+        console.log('componentWillUnmount');
+        window.removeEventListener('beforeunload', this.confirmLeave);
+    }
+    render() {
+        console.log('Render');
+        return <div>笔记 会在 {this.props.secondsLeft} 秒后删除</div>
+    }
+}
+```
+添加`"build-demo2": "./node_modules/.bin/babel demo2/jsx -d demo2/js -w"`
+执行`npm run build-demo2`:转换jsx为js
+执行`http-server`运行`localhost:8080`
+
+<img src="./images/p1_8.png" width="20%" height="auto"/>
+
+[返回顶端](#组件生命周期) [返回目录](../README.md) 

@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-demo1": "./node_modules/.bin/babel demo1/jsx -d demo1/js -w"
+    "build-demo1": "./node_modules/.bin/babel demo1/jsx -d demo1/js -w",
+    "build-demo2": "./node_modules/.bin/babel demo2/jsx -d demo2/js -w"
   },
   "keywords": [],
   "author": "",
