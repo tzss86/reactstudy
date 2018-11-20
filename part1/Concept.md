@@ -1,4 +1,4 @@
-# React基础概念
+# React基础概念与JSX
 ------
 #### 1. React Core 与 React DOM
 * React 主要的包有ReactCore和ReactDOM，ReactCore(npm中是react.js)是核心部分，ReactDOM用于挂在元素到网页的DOM组件
@@ -99,4 +99,4 @@ Hello组件类直接`return<h1></h1>`，并直接在ReactDOM.render中创建需�
 
 <img src="./images/p1_3.png" width="50%" height="auto" style="margin-left: 5%"/>
 
-[返回顶端](#React基础概念)
+[返回顶端](#React基础概念与JSX) [返回目录](../README.md) 
