@@ -3,20 +3,21 @@ class Content extends React.Component {
 		super(props);
 
 		this.handleChange = this.handleChange.bind(this);
+		this.handleInput = this.handleInput.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 
-		this.handleFirstNameChange = this.handleFirstNameChange.bind(this);
+		
 		this.handleRadio = this.handleRadio.bind(this);
 		this.handleCheckbox = this.handleCheckbox.bind(this);
-		this.handleInput = this.handleInput.bind(this);
+		
 		this.handleSelectChange = this.handleSelectChange.bind(this);
 		this.handleMultiSelectChange = this.handleMultiSelectChange.bind(this);
 		
 
 		this.state = {
-			firstName:"lirui",
+			name:"rui",
 			password:"123456",
-			description : "这里是描述",
+			description : "description is here",
 			radioGroup: {angular:false, react:true, vue:false},
 			checkboxGroup:{node:false, react:true, express:false, mongodb:false},
 			selectedValue: 'node',
@@ -26,11 +27,7 @@ class Content extends React.Component {
 
 	handleChange(event) {
 		console.log('onChange', event.target.value, event.target.checked);
-		if(event.target.name == "password"){
-			this.setState({password:event.target.value});
-		} else if(event.target.name == "description") {
-			this.setState({description:event.target.value});
-		}
+		this.setState({[event.target.name]:event.target.value});
 	}
 
 	handleSubmit(event){
@@ -42,8 +39,14 @@ class Content extends React.Component {
 
 	handleRadio(event){
 		console.log('Radio',event.target.value, event.target.checked);
-		let obj = {};
-		obj[event.target.value] = event.target.checked;
+		let obj = this.state.radioGroup;
+		for(let key in obj){
+			if(event.target.value == key){
+				obj[key] = event.target.checked;
+			} else {
+				obj[key] =  ! event.target.checked;
+			}
+		}
 		this.setState({radioGroup:obj});
 	}
 
@@ -59,25 +62,31 @@ class Content extends React.Component {
 	}
 
 	handleSelectChange(event){
-		console.log('Select',event.target.value, event.target.selected);
+		console.log('Select',event.target.value);
 		this.setState({selectedValue: event.target.value});
 	}
 
 	handleMultiSelectChange(event){
-		console.log('MultiSelect',event.target.value, event.target.selected);
-		//this.setState({multiselectValue: event.target.value});
+		console.log('MultiSelect',event.target.value,event.target.selected);
+
+		var options = event.target.options;
+		var value = [];
+		for (var i = 0, l = options.length; i < l; i++) {
+			console.log(options[i].selected);
+			if (options[i].selected) {
+		  		value.push(options[i].value);
+			}
+		}
+
+		this.setState({multiselectValue: value});
 	}
 
-	handleFirstNameChange(event){
-		console.log(event.target.value, event.target.selected);
-		this.setState({firstName: event.target.value});
-	}
-
+	
 	render(){
 		return <div className="container">
 			<form onSubmit={this.handleSubmit}>
 		        <h2>输入姓名</h2>
-		        <input type="text" name="firstName" value={this.state.firstName} onChange={this.handleFirstNameChange}/>
+		        <input type="text" name="name" value={this.state.name} onChange={this.handleChange}/>
 				<hr/>
 				<h2>输入密码</h2>
 				<input type="password" name="password" value={this.state.password} onChange={this.handleChange} onInput={this.handleInput} />
@@ -134,7 +143,7 @@ class Content extends React.Component {
 		        </select>
 		        <hr/>
 		        <h2>提交按钮</h2>
-		        <input type="button" defaultValue="Send" onClick={this.handleSubmit}/>
+		        <input type="button" onClick={this.handleSubmit}/>
 			</form>
 		</div>
 	}
