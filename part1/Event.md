@@ -81,6 +81,8 @@ class Content extends React.Component {
 
 * 另外，我们需要清楚的是：如果子组件之间是需要交互的，我们就将事件处理逻辑放在父组件中，如果事件只关心子组件，则不需要让事件处理程序在父组件上来污染其他子组件。
 
+* 注意：有些事件是React不支持的，例如：resize事件，所以按照常规方法添加到元素上是不起作用的。`<div onResize={this.handleResize}></div>`无效。需要将这类事件添加到组件生命周期中的`componentDidMount()`中并且绑定到`window`上：`window.addEventListener('resize',this.handleResize)`。并在生命周期中的`componentWillUnmount()`函数里移除监听:`window.removeEventListener('resize',this.handleResize)`
+
 
 #### 5. 例子讲解
 
@@ -127,3 +129,135 @@ class Mouse extends React.Component {
 
 <img src="./images/p1_11.png" width="70%" height="auto">
 
+##### 5.3 子组件之间交互
+本例子中有3个组件：分别是内容组件（父组件），它有2个子组件（按钮和文本），点击按钮组件时，改变文本的显示内容。
+
+```javascript
+class Content extends React.Component {
+     constructor(props) {
+        super(props);
+        this.handleClick = this.handleClick.bind(this);//点击事件绑定在父组件上
+        this.state = {counter: 0};
+      }
+      handleClick(event) {
+        this.setState({counter: ++this.state.counter});
+      }
+      render(){
+        return (
+            <div>
+                <ClickCounterButton handler={this.handleClick}/>//按钮组件
+                <br/>
+                <Counter value={this.state.counter}/>//文本计数组件
+            </div>
+        )
+      }
+}
+```
+下面是2个展示组件，我用函数创建
+```javascript
+const ClickCounterButton = props => <button onClick={props.handler} className="btn btn-info">点击一下呢</button>
+
+const Counter = props => <span>点击了 {props.value} 次.</span>
+```
+
+执行结果：
+
+<img src="./images/p1_12.png" width="15%" />
+
+##### 5.4 与jQuery UI 事件交互
+假设jquery-ui里有个slider滑块，已存在了，现在只需要给它添加两个按钮（加1与减1），那么与React怎样结合呢？看下面代码：
+```html
+<script>
+  $(function() {
+    let handleChange = (e, ui) => {
+      var slideEvent = new CustomEvent('slide', {//自定义是一个事件
+        detail: {ui: ui, jQueryEvent: e}//传递参数是detail对象
+      })
+      window.dispatchEvent(slideEvent);//派发一个事件给window
+    }
+    
+    $('#slider').slider({//jQuery创建滑块
+      'change': handleChange,
+      'slide': handleChange
+    })
+  })
+</script>
+
+<div class="container-fluid">
+      <h1>滑杆</h1>
+      <div id="slider"></div><!--来自jquery-ui.js-->
+      <div id="content"></div><!--我们添加的两个按钮-->
+
+      <script src="js/sliderbuttons.js?v=1"></script>
+      <script src="js/slidervalue.js"></script>
+      <script src="js/script.js?v=1"></script>
+    </div>
+```
+下面是slidervalue.jsx
+```javascript
+class SliderValue extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleSlide = this.handleSlide.bind(this);
+    this.state = {sliderValue: 0};
+  }
+  handleSlide(event) {//将显示值更新为event.detail.ui.value
+    this.setState({sliderValue: event.detail.ui.value});
+  }
+  componentDidMount() {
+    window.addEventListener('slide', this.handleSlide);//监听window的slide事件，从而触发更新值
+  }
+  componentWillUnmount() {
+    window.removeEventListener('slide', this.handleSlide);
+  }
+  render() {
+    return <div className="" >Value: {this.state.sliderValue}</div>
+  }
+}
+```
+
+下面是sliderbutton.jsx
+```javascript
+class SliderButtons extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {sliderValue: 0};
+    this.handleSlide = this.handleSlide.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+  handleSlide(event, ui) {
+    this.setState({sliderValue: ui.value});
+  }
+  handleChange(value) {//按钮点击事件处理程序
+    return () => {
+      $('#slider').slider('value', this.state.sliderValue + value);//改变jQuery 滑块 的值
+      this.setState({sliderValue: this.state.sliderValue + value});//改变按钮状态
+    }
+  }
+  componentDidMount() {
+    $('#slider').on('slide', this.handleSlide);//监听滑块滑动事件，以便修改按钮的值
+  }
+  componentWillUnmount() {
+    $('#slider').off('slide', this.handleSlide);
+  }
+  render() {
+    return <div>
+      <button disabled={(this.state.sliderValue<1) ? true : false}
+        className="btn btn-default"
+        onClick={this.handleChange(-1)}>
+          1 Less ({this.state.sliderValue - 1})
+      </button>
+      <button disabled={(this.state.sliderValue>99) ? true : false}
+        className="btn btn-default"
+        onClick={this.handleChange(1)}>
+          1 More ({this.state.sliderValue + 1})
+      </button>
+    </div>
+  }
+}
+```
+执行结果：
+
+<img src="./images/p1_13.png" width="45%" />
+
+[返回顶端](#事件) [返回目录](../README.md) 

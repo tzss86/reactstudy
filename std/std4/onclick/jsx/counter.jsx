@@ -1,0 +1,1 @@
+const Counter = props => <span>点击了 {props.value} 次.</span>
