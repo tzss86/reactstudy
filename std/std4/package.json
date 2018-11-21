@@ -1,0 +1,25 @@
+{
+  "name": "std4",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-button": "./node_modules/.bin/babel button/jsx -d button/js -w",
+    "build-mouse": "./node_modules/.bin/babel mouse/jsx -d mouse/js -w",
+    "build-onclick": "./node_modules/.bin/babel onclick/jsx -d onclick/js -w",
+    "build-slider": "./node_modules/.bin/babel slider/jsx -d slider/js -w"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-react": "^6.24.1"
+  },
+  "babel": {
+    "presets": [
+      "react"
+    ]
+  }
+}
