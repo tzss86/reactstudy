@@ -1,0 +1,12 @@
+#content div {
+  margin-top: 20px;
+}
+button {
+  margin: 5px;
+}
+.fancy-border-blue{
+	border: 2px solid blue;
+}
+.fancy-border-red{
+	border: 2px solid red;
+}

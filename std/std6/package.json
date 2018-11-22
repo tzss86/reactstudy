@@ -1,0 +1,24 @@
+{
+  "name": "std6",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-prop": "./node_modules/.bin/babel prop/jsx -d prop/js -w",
+    "build-children": "./node_modules/.bin/babel children/jsx -d children/js -w",
+    "build-hoc": "./node_modules/.bin/babel hoc/jsx -d hoc/js -w"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "babel": {
+    "presets": [
+      "react"
+    ]
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-react": "^6.24.1"
+  }
+}

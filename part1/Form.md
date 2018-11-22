@@ -191,4 +191,156 @@ class Content extends React.Component {
 
 #### 2. 扩展组件
 
+##### 2.1 组件默认属性与属性类型提示
+* 创建组件的基本方法我们已经掌握，为了更好的开发，我们还可以利用React为我们提供的 *组件默认属性* 和 *属性类型提示* 两个功能来增加代码的容错性和开发环境的友好提示。
+* 我们在组件类上添加`defaultProps={}`来设置组件的默认属性，当别人忘记传入必须的属性值时，组件会显示`defaultProps`中的默认值。
+* 我们在开发阶段在组件类上添加`propTypes={}`来设置属性值的类型，当类型不匹配时，会在浏览器`Console`中发出提示`Warning`。
+
+```javascript
+class Content extends React.Component {
+    render(){
+        return (
+            <div>
+                <Button buttonLabel="Start"/>//buttonLabel是必须的属性
+                <Button />//忘记传buttonLabel
+                <Button />//忘记传buttonLabel
+                <Button />//忘记传buttonLabel
+            </div>
+            )
+    }
+}
+```
+下面是Button组件：
+```javascript
+const Button = props => <button className="btn" >{props.buttonLabel}</button>
+Button.defaultValue = {buttonLabel:"Butn"}//设置默认属性值
+
+Button.propTypes = {//设置属性类型提示
+    handler:PropTypes.func.isRequired,//handler 是函数类型，且为必须
+    title:PropTypes.string,//可选的title属性，类型为字符串
+    email(props, propName, componentName) {//使用正则表达式检验email属性的值是否符合相关格式
+    let emailRegularExpression = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i
+    if (!emailRegularExpression.test(props[propName])) {
+      return new Error('Email validation failed!')
+    }
+  }
+}
+```
+* 值的注意的是propTypes的类型定义来自独立的包（prop-types），需要单独引用入html中。
+
+执行结果：
+
+<img src="./images/p1_14.png" width="80%" />
+
+##### 2.2 渲染子组件
+* 子组件通过`this.props.children`渲染，父组件可以设计成通用的`<div>包装器`，它可以有很多样式，布局，交互事件等等。对于里面的子组件是完全松耦合的，子组件可以各种各样。
+* `this.props.children`属性当含多个子组件时，可以通过`React.Children.count(this.props.children)`获取子组件数量，再通过`{this.props.children[0]}`方式访问。
+
+
+```javascript
+const FancyBorder = props => {//抽象组件FancyBorder，根据属性显示不同颜色
+    return (<div className={'fancy-border-' + props.color}>{props.children}</div>);
+} 
+
+class Dialog extends React.Component { //对话框组件，向FancyBorder添加了一个标题和 一个信息作为子组件，以及从Dialog父组件传递下来的其他子组件
+    render(){
+        return (
+            <FancyBorder color={this.props.bcolor}>
+              <h1 className="Dialog-title">
+                {this.props.title}
+              </h1>
+              <p className="Dialog-message">
+                {this.props.message}
+              </p>
+              {this.props.children}
+            </FancyBorder>
+          );
+    }
+}
+
+class Content extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSignUp = this.handleSignUp.bind(this);
+    this.state = {login: ''};
+  }
+
+  handleChange(e) {
+    this.setState({login: e.target.value});
+  }
+
+  handleSignUp() {
+    alert(`欢迎订阅 , ${this.state.login}!`);
+  }
+
+  render() {
+    return (
+      <div>
+        <Dialog title="欢迎学习React" message="可以提供你的联系邮箱吗？" bcolor="blue">
+          <input value={this.state.login} onChange={this.handleChange} />
+          <button onClick={this.handleSignUp}>订阅</button>
+        </Dialog>
+        <Dialog title="学习React" message="欢迎查阅" bcolor="red">
+          <p>这里是一些基础知识讲解</p>
+        </Dialog>
+      </div>
+    );
+  }
+}
+```
+Content中有两个Dialog组件，它们的子组件分别是不同的元素组成，通过`this.props.children`都可以穿透组件
+完整代码见：[std6/children](../std/std6/children)，下面是执行结果：
+
+<img src="./images/p1_15.png" width="80%" />
+
+##### 2.3 高阶组件（Higher-Order Component）
+* 高阶组件的定义类似函数，使用另一个组件作为参数，此参数由该组件继承与HOC
+* 下面的例子是有3个已存在的展示组件，需要给它们增加公共的属性与事件响应，所以添加一个高阶组件来做这个事。
+
+```javascript
+const Button = props => <button className="btn btn-primary" onClick={props.handleClick}>{props.label}</button>;
+const Link = props => <a onClick={props.handleClick} href="#">{props.label}</a>;
+const Logo = props => <img onClick={props.handleClick} width="40" src="images/logo.png" href="#"/>
+```
+
+`<Button> <Link> <Logo>`是可以复用的展示组件，封装它们并添加公共的新功能：点击后显示网站到`<frame>`中，并且需要使用公共的label属性值。
+
+```javascript
+const Loader = (Component) => {//创建一个高阶组件
+    
+    class _Load extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                label: 'CommonLabel', //公共属性label
+                handleClick: this.handleClick.bind(this)//公共点击事件处理函数
+            } 
+        }
+        getUrl() {
+          return 'http://baidu.com'
+        }
+        handleClick(event) {
+          document.getElementById('frame').src = this.getUrl();//点击后显示网页到iframe中
+        }
+        componentDidMount() {
+          console.log(ReactDOM.findDOMNode(this));
+        }
+        render() {//渲染传入的Component，并将_Load的状态和属性传递下去
+          console.log(this.state);
+          return <Component {...this.state} {...this.props} />
+        }  
+    }
+
+    _Load.displayName = 'PowerfulComponent'
+
+    return _Load; 
+}
+```
+上面的Loader就是一个高阶组件，传入的组件经过改造升级后被返回。通常`_`代表私有，及不能作为公共接口，所以我们给`_Load`取一个可供展示的名字`PowerfulComponent`，这样在浏览器中看到的组件名称就是PowerfulComponent了。
+
+执行代码：
+
+<img src="./images/p1_16.png" width="50%" />
+
 [返回顶端](#表单使用与组建扩展) [返回目录](../README.md) 
