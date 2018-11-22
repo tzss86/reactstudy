@@ -26,3 +26,21 @@
     - 数据模型与后端：Redux
     - 路由库：React Router
     - 组件集合库: React-Bootstrap
+
+* 坑
+
+    - `npm install --save-dev react-dom` 报错：
+    
+    <img src="./images/pre_2.png" width="60%" height="auto">
+
+        原因：全局环境与本地环境不一致产生冲突
+        解决办法：`npm rm -g react-dom`，`npm cache clean --force`，`npm install --save-dev react-dom`
+    
+    <img src="./images/pre_3.png" width="40%" height="auto">
+
+    <img src="./images/pre_4.png" width="50%" height="auto">
+
+    <img src="./images/pre_5.png" width="50%" height="auto">
+
+* 常识
+    - npm 安装的react 和react-dom 里有2个文件夹，cjs(用于Node中)与umd(用于所有地方，可以是browser)
