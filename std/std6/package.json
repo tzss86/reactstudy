@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-prop": "./node_modules/.bin/babel prop/jsx -d prop/js -w",
     "build-children": "./node_modules/.bin/babel children/jsx -d children/js -w",
-    "build-hoc": "./node_modules/.bin/babel hoc/jsx -d hoc/js -w"
+    "build-hoc": "./node_modules/.bin/babel hoc/jsx -d hoc/js",
+    "build":"npm run build-hoc && cd hoc && http-server"
   },
   "keywords": [],
   "author": "",

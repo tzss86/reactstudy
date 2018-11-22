@@ -1,0 +1,27 @@
+{
+  "name": "std7",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-menu": "./node_modules/.bin/babel menu/jsx -d menu/js",
+    "start-menu": "npm run build-menu && cd menu && http-server",
+    "build-tooltip": "./node_modules/.bin/babel tooltip/jsx -d tooltip/js",
+    "start-tooltip": "npm run build-tooltip && cd tooltip && http-server",
+    "build-timer": "./node_modules/.bin/babel timer/jsx -d timer/js",
+    "start-timer": "npm run build-timer && cd timer && http-server"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "babel": {
+    "presets": [
+      "react"
+    ]
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-react": "^6.24.1"
+  }
+}
