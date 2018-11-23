@@ -33,7 +33,7 @@
     
     <img src="./images/pre_2.png" width="60%" height="auto">
 
-        原因：全局环境与本地环境不一致产生冲突
+        原因：???
         解决办法：`npm rm -g react-dom`，`npm cache clean --force`，`npm install --save-dev react-dom`
     
     <img src="./images/pre_3.png" width="40%" height="auto">
