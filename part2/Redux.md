@@ -185,5 +185,6 @@ export default VisibleTodoList
 
 #### 5. 例子demo
 
+完整例子见：[redux](../std/std10/redux)
 
 [返回顶端](#Redux) [返回目录](../README.md)
