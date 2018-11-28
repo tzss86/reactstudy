@@ -107,7 +107,7 @@ Redux的Store是保持State数据和处理State更新的地方，Flux框架中�
 
 * 获取应用程序的State: `store.getState()`
 * 创建store： `const store = createStore(Reducers, initStateData)`
-* 合并多个Reducer： `combineReducers(colors, sort)`
+* 合并多个Reducer： `combineReducers({ colors, sort })`
 * 分发Action： `store.dispatch(Action)`
 * 监听/订阅 store： `store.subscribe(callback)` 每次分发完一个Action就会触发一次
 * 取消监听/订阅 store： `store.subscribe(callback)()`
