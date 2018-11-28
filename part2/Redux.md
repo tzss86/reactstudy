@@ -114,6 +114,18 @@ Redux的Store是保持State数据和处理State更新的地方，Flux框架中�
 
 总之，Store是Redux应用程序中保存和管理State数据的地方，也是通过store分发Action的形式来改变State数据。
 
+```javascript
+//自定义combineReducers()
+const combinedReducers (reducers) => {
+    return (state={},action) => {
+        return Object.keys(reducers).reduce((nextState,key) => {
+            nextState[key] = reducers[key](state[key],action);
+            return nextState;
+        },{});
+    };
+};
+```
+
 ##### 3.4 Action生成器
 Action对象是通过简单小而美的js语法表示的，Action生成器就是返回这类语法格式的函数。可以为每一种Action类型添加一个对应的生成器：
 ```javascript
