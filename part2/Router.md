@@ -12,8 +12,60 @@
     
 
 #### 2. 手动创建路由
+我们看一个例子：
+```javascript
+const mapping = {
+    '#profile' : <div>个人信息（<a href="#">返回主页</a>）</div>,
+    '#account' : <div>账户信息（<a href="#">返回主页</a>）</div>,
+    '*' : <div><p>目录</p><ul><li><a href="#profile">个人信息</a></li><li><a href="#account">账户信息</a></li></ul></div>
+};
 
-* 待补充
+ReactDOM.render(
+  <Router mapping = {mapping} />,
+  document.getElementById('content')
+)
+```
+
+我的应用程序根目录渲染了一个<Router>组件，传递了一个mapping属性，它映射着不同路由对应的显示内容。
+
+```javascript
+class Router extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            hash: window.location.hash
+        }
+        this.updateHash = this.updateHash.bind(this);
+    }
+
+    updateHash(event){
+        console.log(window.location.hash);
+        this.setState({
+            hash: window.location.hash
+        });
+    }
+
+    componentDidMount(){
+        window.addEventListener('hashchange',this.updateHash,false);
+    }
+
+    componentWillUnmont(){
+        window.removeEventListener('hashchange', this.updateHash, false);
+    }
+
+    render() {
+        if (this.props.mapping[this.state.hash]){
+            return this.props.mapping[this.state.hash]
+        }
+        else{
+            return this.props.mapping['*']
+        }
+    }
+}
+```
+Router组件通过在生命周期中监听hashchange事件，当地址栏的哈希改变时，触发处理函数，我们获取到当前的hash值，将它放入state中，并在render函数中判定渲染内容。
+
+完整例子见：[std9/simple-router](../std/std9/simple-router)
 
 #### 3. 使用路由库React Router
 
