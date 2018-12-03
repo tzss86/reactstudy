@@ -23,4 +23,4 @@
 * [项目练习](./part2/Exercise.md)
 
 #### 其他
-* [脚手架](./part3/scaffold.md)
+* [脚手架](./part3/Scaffold.md)
