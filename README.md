@@ -19,5 +19,5 @@
 * [React Router](./part2/Router.md)
 * [Redux](./part2/Redux.md)
 * [GraphQL](./part2/GraphQL.md)
-* [Jest](./part2/Jest.md)
+* [Jest&ESLint](./part2/Jest.md)
 * [项目练习](./part2/Exercise.md)

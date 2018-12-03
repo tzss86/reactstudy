@@ -1,4 +1,4 @@
-# Jest
+# Jest&ESLint
 ------
 
 >Code isn't an asset, it's a liability
@@ -130,5 +130,39 @@ describe('HelloWorld', ()=>{
 我们测试了HelloWorld组件下div元素的个数是否等于1。运行`node_modules/.bin/jest find-div.test.js`
 
 <img src="./images/p2_10.png" width="60%" height="auto" />
+
+#### 3. ESLint
+* ESLint 可以检测 ECMAScript/JavaScript 代码中的语法错误和代码规范，它的目标是保证代码的一致性和避免错误。
+
+* `npm install --save-dev eslint` 安装eslint
+
+* `npm install --save-dev eslint-plugin-react@latest` 因为使用代码使用了React，所以还需要一个插件
+
+* `./node_modules/.bin/eslint --init` 初始化eslint的配置，回答一系列问题后会生成`.eslintrc.js`配置文件
+
+* 创建一个`test.js`，添加下面代码：
+
+```javascript
+const test = () =>{
+    console.log("eslint");
+}
+
+test();
+```
+
+* 运行`./node_modules/.bin/eslint test.js` 可以看到下面的错误信息：
+
+<img src="./images/p2_11.png" width="60%" height="auto" />
+
+我们可以看到上面报出来3条问题：我们用了Tab键，规则里需要的是空格键；我们代码里出现了console.log；我们缺少分号。
+
+```javascript
+const test = () =>{console.log("eslint");};
+
+test();
+```
+我们可以关闭检测console.log，在配置文件中添加：`'no-console': 'off'`。去掉Tab和添加`;`后，我们再此运行eslint，就不会有任何错误输出了。
+
+例子demo见：[std/std12/testeslint](../std/std12/testeslint)
 
 [返回顶端](#Jest) [返回目录](../README.md)
