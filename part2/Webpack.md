@@ -26,6 +26,7 @@
 * 前提：当你npm install fail 时,可以尝试下列步骤：
     - `npm ls --depth 0 -g` 看下全局安装的包有哪些，会不会与本地冲，按理说不会冲突。
     - `npm cache verify` 验证缓存数据的有效性和完整性，清理垃圾数据
+    - 删掉package-lock.json
     - `npm cache clean --force` 强制清除npm缓存
     - 保持耐心，可能要重复几次，跟公司网络也可能有关
 
