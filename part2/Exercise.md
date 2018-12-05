@@ -350,7 +350,60 @@ if(module.hot){
 <img src="./images/p2_14.png" width="50%" height="auto" />
 
 
-##### 7. 调整项目结构及添加eslint
+##### 7. 调整项目结构及添加剩余配置
+
+###### 1. 安装clean-webpack-plugin
+
+`npm install --save-dev clean-webpack-plugin`
+
+配置：
+```javascript
+const CleanWebpackPlugin = require("clean-webpack-plugin");
+
+module.exports = {
+    ...
+    plugins: [
+        new CleanWebpackPlugin(["dist"]),
+        ...
+    ]
+};
+```
+
+用于每次编译时先删除dist目录，再重新生成，以免造成“废文件”存在。
+
+###### 2. 安装 eslint
+
+在[Jest&ESLint](./Jest.md) 小节中我们单独安装了eslint，现在要将它添加到webpack环境，需要依次安装下面的依赖包：
+
+`npm install --save-dev eslint eslint-plugin-react eslint-loader`
+
+在webpack.config.js中配置：
+
+```javascript
+{
+    test: /\.(js|jsx)$/,
+    exclude: /node_modules/,
+    use: ["babel-loader", "eslint-loader"]
+}
+```
+
+初始化eslint，生成.eslintrc.js文件
+
+`./node_modules/.bin/eslint --init`
+
+回答若干问题后生成.eslintrc.js
+
+安装babel-eslint 来检查ES6代码
+
+`npm install --save-dev babel-eslint`
+
+在.eslintrc.js 中配置：
+
+```javascript
+"parser": "babel-eslint",
+```
+
+`npm run dev` 查看代码有无规范问题。
 
 
 
