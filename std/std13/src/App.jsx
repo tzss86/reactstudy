@@ -4,7 +4,8 @@ import ReactDOM from "react-dom";
 const App = () => {
 	return (
 		<div>
-			<p>React here!</p>
+			<p>Hot Module Replace !</p>
+			<p>hello react</p>
 		</div>
 	);
 };

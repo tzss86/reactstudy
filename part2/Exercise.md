@@ -250,6 +250,107 @@ module.exports = {
 
 把./dist/index.html 放到浏览器中，可以看到页面呈现出React here!字样。
 
+##### 5. extracting CSS to a file
+
+安装css-loader 和 mini-css-extract-plugin插件[https://github.com/webpack-contrib/mini-css-extract-plugin]。
+
+`npm install --save-dev mini-css-extract-plugin css-loader`
+
+创建./src/main.css
+
+```css
+/*main.css*/
+body{
+    background-color: #ff00ff;
+}
+```
+
+在./src/index.js 中引入main.css
+
+`import style from "./main.css";`
+
+webpack.config.js 配置css
+```javascript
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");//引入插件
+
+module.exports = {
+    module: {
+        rules: [
+            ...
+            {
+                test: /\.css$/,
+                use: [MiniCssExtractPlugin.loader, "css-loader"]
+            }
+        ]
+    },
+    plugins: [
+        new MiniCssExtractPlugin({
+            filename: "[name].css",
+            chunkFilename: "[id].css"
+        })
+    ]
+};
+```
+
+`npm run dev` 
+
+可以看到dist下的main.css生成。
+
+注意：extract-text-webpack-plugin 在 webpack 4.x 下无效，用 mini-css-extract-plugin 代替。
+
+##### 6. the webpack dev server
+
+之前的章节中我们讲过为什么要使用本地开发服务器，也安装过`http-server`。webpack-dev-server是配合webpack使用的本地开发服务器，它可以实现自动更新页面和开启热更新（不用刷新页面，模块热替换，配合webpack内置的HMR插件）。
+
+安装webpack-dev-server
+
+`npm install --save-dev webpack-dev-server`
+
+在package.json中添加：
+
+`"start": "webpack-dev-server --mode development --open"`
+
+`npm run start` 即浏览器自动打开加载http://localhost:8080/
+
+<img src="./images/p2_12.png" width="50%" height="auto" />
+
+###### 开启热更新[HMR] 
+
+在webpack.config.js中引入webpack内置插件HotModuleReplacementPlugin，在devServer.hot = true
+
+```javascript
+const webpack = require('webpack');
+
+module.exports = {
+    devServer: {
+        hot: true
+    },
+    ...
+    plugins: [
+        ...
+        new webpack.HotModuleReplacementPlugin()
+    ]
+};
+```
+在./src/index.js中：
+```javascript
+if(module.hot){
+    module.hot.accept();//全部模块都接受热更新
+
+    module.hot.accept('./App.jsx',function(){//指定单个模块接受热更新
+        console.log("App.jsx update");
+    });
+}
+```
+
+`npm run start`
+
+<img src="./images/p2_13.png" width="50%" height="auto" />
+
+<img src="./images/p2_14.png" width="50%" height="auto" />
+
+
+##### 7. 调整项目结构及添加eslint
 
 
 

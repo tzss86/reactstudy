@@ -1,8 +1,14 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const webpack = require('webpack');
+
 
 module.exports = {
 	devtool: 'source-map',
+	devServer: {
+    	contentBase: './dist',
+    	hot: true
+   	},
 	module: {
 		rules: [
 			{
@@ -35,6 +41,7 @@ module.exports = {
 		new MiniCssExtractPlugin({
 			filename: "[name].css",
 			chunkFilename: "[id].css"
-		})
+		}),
+		new webpack.HotModuleReplacementPlugin()
 	]
 };
