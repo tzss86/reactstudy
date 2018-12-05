@@ -35,7 +35,7 @@
     - 初始化并生成`package.json` ：`npm init -y` 
     - 通过`npm install --save-dev` 安装下列库:
         - `react 与 react-dom` 不再通过拷贝方式和`<script></script>`手动加入到html的方式使用`React`了，我们会通过模块导入语法使用React。
-        - `babel-core ，babel-loader 与babel-preset-react` 处理JSX编译成JS
+        - `babel-core ，babel-loader 与babel-preset-react` 处理ES6-ES5,JSX转换成JS
         - `webpack` 打包工具
         - `css-loader 与style-loader` css加载器使得可以用js解析加载css，style加载器将css添加到html页面
         - `react-hot-loader` react的热模块替换加载器（Hot Module Replacement），让代码更新后不必刷新浏览器来重新加载查看效果，提高开发效率
