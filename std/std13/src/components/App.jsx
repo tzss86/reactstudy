@@ -1,9 +1,9 @@
 import React from 'react';
+import ScenicList from './ui/ScenicList';
 
 const App = () => (
-  <div>
-    <p>Hot Module Replace !</p>
-    <p>hello react</p>
+  <div className="content">
+    <ScenicList />
   </div>
 );
 
