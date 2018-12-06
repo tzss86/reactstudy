@@ -375,7 +375,7 @@ module.exports = {
 
 在[Jest&ESLint](./Jest.md) 小节中我们单独安装了eslint，现在要将它添加到webpack环境，需要依次安装下面的依赖包：
 
-`npm install --save-dev eslint eslint-plugin-react eslint-loader`
+`npm install --save-dev eslint eslint-loader`
 
 在webpack.config.js中配置：
 
@@ -386,24 +386,135 @@ module.exports = {
     use: ["babel-loader", "eslint-loader"]
 }
 ```
+我们这里先不单独安装`eslint-plugin-react`
 
 初始化eslint，生成.eslintrc.js文件
 
 `./node_modules/.bin/eslint --init`
 
-回答若干问题后生成.eslintrc.js
+这次我们采用Airbnb的eslint配置来生成.eslintrc.js
 
-安装babel-eslint 来检查ES6代码
+>Use a popular style guide
+
+>Airbnb (https://github.com/airbnb/javascript)
+
+>Do you use React? (y/N)
+
+安装完系列依赖后，生成的.eslintrc.js
+
+```javascript
+module.exports = {
+    "extends": "airbnb"
+};
+```
+这时检查一下package.json，看刚刚安装了下列依赖：
+
+```javascript
+"devDependencies": {
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-react": "^7.11.1"
+  }
+```
+嗯，好棒！
+
+接着安装babel-eslint 来支持ES6代码
 
 `npm install --save-dev babel-eslint`
 
 在.eslintrc.js 中配置：
 
 ```javascript
-"parser": "babel-eslint",
+module.exports = {
+    "parser": "babel-eslint",
+    "extends": "airbnb"
+};
 ```
 
-`npm run dev` 查看代码有无规范问题。
+`npm run dev` 查看代码有无规范问题，也可以配置script单独运行eslint:
 
+```javascript
+//package.json
+"scripts": {
+    "lint": "eslint --ext .jsx --ext .js ./src --fix"
+  }
+```
+这里我们选择添加`--fix`让eslint自动修复一些简单错误，若需要eslint-loder也支持自动修复需要在webpack.config.js修改：
 
+```javascript
+//webpack.config.js
+{
+    loader: "eslint-loader",
+    options: { fix: true }
+}
+```
+[坑：eslint-loader v2.1.1 fix 无效](https://github.com/webpack-contrib/eslint-loader/issues/248)
+
+好了，运行一下`npm run lint`
+
+哇，8个错误，我究竟写了什么代码（我不是什么都还没写么...）？
+
+<img src="./images/p2_15.png" width="80%" height="auto" />
+
+>第三条： error: Unexpected use of file extension "jsx" for "./components/App.jsx"
+
+隐藏扩展名：
+
+```javascript
+//webpack.config.js
+...
+resolve: {
+        extensions: ['.js', '.jsx'],
+    }
+    ...
+
+//./src/index.js
+import App from './components/App';//去掉.jsx
+```
+
+再次运行：
+
+<img src="./images/p2_16.png" width="30%" height="auto" />
+
+OK，再看第一、二、六条，分别是说react和react-dom安装的位置不对，以及不允许.js文件中出现JSX。
+通过修改eslint的规则，我们允许上面两类情况发生：
+```javascript
+//.eslintrc.js
+module.exports = {
+   ...
+    "rules": {
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+        "import/no-extraneous-dependencies": ["error", {"devDependencies": true}]
+    }
+};
+```
+
+再次运行：
+
+<img src="./images/p2_17.png" width="30%" height="auto" />
+
+OK，最后一个error： 'document is not defined'，我们去.eslintrc.js 添加使用环境：
+
+```javascript
+//.eslintrc.js
+module.exports = {
+   "env": {
+        "browser": true,
+        "node": true,
+    },
+    ...
+};
+```
+
+再次运行：
+
+<img src="./images/p2_18.png" width="30%" height="auto" />
+
+好的，`error` 终于消灭掉了，`wanring` 是说不推荐代码中有console。我们可以根据自身情况选择暂时关闭它： "no-console": 0
+
+再次运行，什么也没有，说明通过了。
+
+###### 3. 调整项目结构
 

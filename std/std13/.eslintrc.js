@@ -1,39 +1,13 @@
 module.exports = {
-    "env": {
-        "browser": true,
-        "commonjs": true,
-        "es6": true,
-        "node": true
-    },
-    "parser": "babel-eslint",
-    "extends": ["eslint:recommended","plugin:react/recommended"],
-    "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-        },
-        "ecmaVersion": 2018,
-        "sourceType": "module"
-    },
-    "plugins": [
-        "react"
-    ],
+	"env": {
+	    "browser": true,
+	    "node": true,
+	},
+	"parser": "babel-eslint",
+    "extends": "airbnb",
     "rules": {
-        "indent": [
-            "error",
-            "tab"
-        ],
-        "linebreak-style": [
-            "error",
-            "unix"
-        ],
-        "quotes": [
-            "error",
-            "double"
-        ],
-        "semi": [
-            "error",
-            "always"
-        ],
-        'no-console': 'off'
-    }
+	  	"react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+	  	"import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
+	  	"no-console": 0
+	}
 };

@@ -20,20 +20,28 @@ module.exports = {
 			{
 				test: /\.(js|jsx)$/,
 				exclude: /node_modules/,
-				use: ["babel-loader", "eslint-loader"]
+				use: [
+						{
+							loader: "babel-loader"
+						}, 
+						{
+							loader: "eslint-loader",
+			          		options: { fix: true }
+		        		}
+		        	]
 			},
 			{
 				test: /\.html$/,
 				use: [
-					{
-						loader: "html-loader",
-						options: { minimize: true }
-					}
-				]
+						{
+							loader: "html-loader",
+							options: { minimize: true }
+						}
+					]
 			},
 			{
 				test: /\.css$/,
-				use: [MiniCssExtractPlugin.loader, "css-loader"]
+				use: [ MiniCssExtractPlugin.loader, "css-loader" ]
 			}
 		]
 	},
@@ -48,5 +56,8 @@ module.exports = {
 			chunkFilename: "./css/[id].[chunkhash].css"
 		}),
 		new webpack.HotModuleReplacementPlugin()
-	]
+	],
+	resolve: {
+	    extensions: ['.js', '.jsx'],
+	}
 };
