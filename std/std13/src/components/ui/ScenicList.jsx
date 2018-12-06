@@ -8,7 +8,7 @@ class ScenicList extends Component {
     return (
       <ul>
         <li className='box'>文殊院<img alt='' src={MyDefaultPic}/></li>
-        <li className="box">宽窄巷子</li>
+        <li className="box">宽窄巷</li>
         <li className="box">青羊宫</li>
       </ul>
     );
