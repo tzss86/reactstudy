@@ -4,11 +4,15 @@
   	justify-content: space-around;
   	align-items: center;
   	background-color: #cc0373;
-  	color: white;
   	opacity: 0.8;
 }
 
 .menu .item {
 	font-size: 1.6rem;
 	padding: 8px;
+	color: white;
+}
+
+.menu .selected{
+	color: yellow;
 }
