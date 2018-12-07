@@ -8,14 +8,14 @@ import BgDefault from '../../images/default_pic.png';
 class Scenic extends Component {
   render() {
     const {
-      id, title, tag, popularize, background, address, rating,
+      id, title, tag, popularize, background, address, rating, onRate,
     } = this.props;
     return (
       <div className="scenic" data-id={id}>
         <img alt="" className="bg" src={background || BgDefault} />
         <p className="title">{title}</p>
         <div className="starbox">
-          <StarRating starsSelected={rating} />
+          <StarRating starsSelected={rating} onRate={onRate} />
         </div>
         <p className="popularize">{popularize}</p>
         <p className="tag">{tag}</p>
@@ -33,6 +33,7 @@ Scenic.propTypes = {
   address: PropTypes.string,
   popularize: PropTypes.number,
   rating: PropTypes.number,
+  onRate: PropTypes.func,
 };
 
 Scenic.defaultProps = {
@@ -41,6 +42,7 @@ Scenic.defaultProps = {
   address: '地址',
   popularize: 0,
   rating: 5,
+  onRate: f => f,
 };
 
 export default Scenic;

@@ -9,6 +9,7 @@ module.exports = {
 	  	"react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
 	  	"import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
 	  	"no-console": 0,
-	  	"react/prefer-stateless-function": 0
+	  	"react/prefer-stateless-function": 0,
+	  	"jsx-a11y/click-events-have-key-events": 0
 	}
 };
