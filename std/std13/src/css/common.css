@@ -25,5 +25,8 @@ a,ul,li {
 
 @font-face {
     font-family: myFirstFont;
-    src: url('../fonts/simkai1.ttf') format("truetype");
+    src: url('../fonts/simkai.ttf') format("truetype"),
+         url('../fonts/simkai.eot') format('eot'),
+         url('../fonts/simkai.svg') format('svg'),
+         url('../fonts/simkai.woff') format('woff');
 }

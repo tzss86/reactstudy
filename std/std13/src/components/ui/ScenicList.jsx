@@ -1,18 +1,22 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+import Scenic from './Scenic';
 import '../../css/common.css';
 import '../../css/ScenicList.css';
-import MyDefaultPic from '../../images/home/default_pic.png';
 
-class ScenicList extends Component {
-  render() {
-    return (
-      <ul>
-        <li className='box'>文殊院<img alt='' src={MyDefaultPic}/></li>
-        <li className="box">宽窄巷</li>
-        <li className="box">青羊宫</li>
-      </ul>
-    );
-  }
-}
+const ScenicList = ({ scenics = [] }) => (
+  <div className="scenic-list">
+    {(scenics.length === 0) ? <p className="no-tip">景区：0</p>
+      : scenics.map(s => <Scenic key={s.id} {...s} />)}
+  </div>
+);
+
+ScenicList.propTypes = {
+  scenics: PropTypes.arrayOf(PropTypes.object),
+};
+
+ScenicList.defaultProps = {
+  scenics: [],
+};
 
 export default ScenicList;

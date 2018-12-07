@@ -1,9 +1,11 @@
 import React from 'react';
-import ScenicList from './ui/ScenicList';
+import Menu from './ui/Menu';
+import { Scenics } from './containers';
 
 const App = () => (
   <div className="content">
-    <ScenicList />
+    <Menu />
+    <Scenics />
   </div>
 );
 

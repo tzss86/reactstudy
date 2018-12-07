@@ -1,4 +1,13 @@
-.box{
+.scenic-list{
+	width: 94%;
+    margin: 3%;
+    border-radius: 8px;
+}
+
+.no-tip{
 	font-family: myFirstFont;
-	font-size: 1rem;
+	font-size: 1.6rem;
+    text-align: center;
+    padding: 2%;
+    color: #cccccc;
 }

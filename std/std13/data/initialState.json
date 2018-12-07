@@ -1,0 +1,22 @@
+{
+  "scenics": [
+    {
+      "id": "598274f8323d474c9ce64cce",
+      "title": "文殊院",
+      "tag": "宗教圣地",
+      "address":"四川·成都",
+      "popularize": 733,
+      "background": "https://1trip-cloud.oss-cn-hangzhou.aliyuncs.com/positionsystem/wenshuyuan/image/201708081334006571502170440657_%E5%A4%A7%E9%9B%84%E5%AE%9D%E6%AE%BF.jpg",
+      "rating":4
+    },
+    {
+      "id": "586a40e2824b065cf3779458",
+      "title": "宽窄巷子",
+      "tag": "城市地标;休闲度假",
+      "address":"四川·成都",
+      "popularize": 950,
+      "background": "https://1trip-cloud.oss-cn-hangzhou.aliyuncs.com/positionsystem/kuanzhaixiangzi/image/201707261410213741501049421374_%E5%9B%BE%E9%9B%860_2a34046d1945a4ada1abd13bf68c4540.jpg",
+      "rating":5
+    }
+  ]
+}

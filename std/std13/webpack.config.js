@@ -82,6 +82,6 @@ module.exports = {
 		new webpack.HotModuleReplacementPlugin()
 	],
 	resolve: {
-	    extensions: ['.js', '.jsx'],
+	    extensions: ['.js', '.jsx', '.json'],
 	}
 };
