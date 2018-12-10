@@ -192,17 +192,94 @@ const ScenicList = ({ scenics = [], onRate = f => f }) => (
 
 使用redux来管理应用数据流，我们需要做下面几件事：
 
+* 创建Action
 * 创建store
 * 添加中间件
-* 创建Actions
 * 创建Reducers
 
-###### 6.1 数据请求
+###### 6.1 数据结构
+
+我们首先创建一个initialState.json用于存放应用初始状态：
+
+```json
+{
+  "scenics": [
+    {
+      "id": "",
+      "title": "",
+      "tag": "",
+      "address":"",
+      "popularize": 0,
+      "background": "",
+      "rating":0
+    }
+  ],
+  "fetching":"none"
+}
+```
+
+可以看出我们的状态树由`scenics`和`fetching`组成，`scenics`存储景区数据，是个array。`fetching`表示当前数据状态，“none”表示未请求。
+
+###### 6.2 创建store
+
+```javascript
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import { scenics, fetching } from './reducers';
+import stateData from '../../data/initialState';
+
+const logger = store => next => (action) => {
+  console.groupCollapsed('dispatching', action.type);
+  console.log('prev state', store.getState());
+  console.log('action', action);
+  const result = next(action);
+  console.log('next state', store.getState());
+  console.groupEnd();
+  return result;
+};
+
+const saver = store => next => (action) => {
+  const result = next(action);
+  localStorage['redux-store'] = JSON.stringify(store.getState());
+  return result;
+};
+
+const storeFactory = (initialState = stateData) => {
+  const local = localStorage['redux-store'];
+  return applyMiddleware(thunk, logger, saver)(createStore)(
+    combineReducers({ scenics, fetching }), local ? JSON.parse(local) : initialState
+  );
+};
+
+export default storeFactory;
+```
+
+storeFactory返回了store，并添加了三个中间件thunk, logger, saver功能，thunk来自`redux-thunk` 让应用可以创建异步ActionCreator，即返回的结果是一个函数，而不是对象，这个函数的表现形式如下：
+
+```javascript
+export const fetchScenicData = () => (dispatch, getState) => {...}
+```
+可以在这里进行一些异步操作，例如数据请求等。
+
+logger中间件是自定义的，用于在控制台打印一些日志信息。
+
+saver中间件是把应用State树通过localStorage方式保存在本地。
+
+中间件通过`applyMiddleware()`方法添加进store。
+
+工厂方法采用`const store = applyMiddleware()(createStore)(reducer, preloadedState)` 方式创建。
+
+`combineReducers({ scenics, fetching })`将多个reducer合并为单个reducer。
+
+`local ? JSON.parse(local) : initialState` 判断本地是否存在数据，若不存在就使用`initialState = stateData`即是initialState.json导入的初始化数据。
+
+###### 6.2 数据请求
 
 状态管理就是数据管理，回忆一下之前是怎样向服务器请求数据的？[std7](../../std/std7/menu)中我们使用了`fetch()`函数在组件的生命周期函数：`componentDidMount()`中，向服务器请求数据并在返回后修改了程序的State。那在redux中应该如何做呢？
 
 我们知道redux中通过store.dispatch(Action)来分发Action，以达到更新State的目的，而Action Creator（动作生成器）是用来生成Action的方法，在ActionCreator中，我们封装了生成Action的细节，它包含了成功创建一个Action的所有逻辑，在这里应该存放所有和后端API交互逻辑相关的内容，所以我们可以在此执行“异步操作”（数据请求等）。
 
+同步Action：
 
 
 
