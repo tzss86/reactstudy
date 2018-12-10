@@ -7,7 +7,8 @@ const Star = ({ selected = false, onClick = f => f }) => (
   <div
     className={(selected) ? 'star selected' : 'star'}
     onClick={onClick}
-    role="presentation"
+    role="button"
+    tabIndex="0"
   />
 );
 

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import ScenicList from './ui/ScenicList';
-import { rateScenic } from '../actions';
+import { rateScenic, fetchScenicData } from '../actions';
 import { sortScenics } from '../lib/helpers';
 
 export const Scenics = connect(
@@ -10,6 +10,9 @@ export const Scenics = connect(
   dispatch => ({
     onRate(id, rating) {
       dispatch(rateScenic(id, rating));
+    },
+    onFetch() {
+      dispatch(fetchScenicData());
     },
   }),
 )(ScenicList);

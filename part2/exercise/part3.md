@@ -27,31 +27,182 @@
 ```javascript
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { HashRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import storeFactory from './store';
 import App from './components/App';
+
 import './css/common.css';
 
-ReactDOM.render(<App />, document.getElementById('app'));
+const store = storeFactory();
+
+ReactDOM.render(
+  <Provider store={store}>
+    <HashRouter>
+      <App />
+    </HashRouter>
+  </Provider>,
+  document.getElementById('app'),
+);
 
 if (module.hot) {
   module.hot.accept();
 }
+
 ```
 
-我们先不引入Redux和Router，index.js的作用在此仅仅是引入公共样式，与将<App /> 挂载到真实节点。接下来添加APP组件。
+我们使用`<Provider store={store}>`来传递应用状态和用`<HashRouter>`来创建应用路由。最后将<App /> 挂载到真实节点。接下来添加APP组件。
 
 ##### 3.App.jsx
 
 ```javascript
 import React from 'react';
+import { Route, Switch } from 'react-router-dom';
 import Menu from './ui/Menu';
-import ScenicList from './ui/ScenicList';
+import { Scenics } from './containers';
 
 const App = () => (
   <div className="content">
-    <Menu />
-    <ScenicList />
+    <Route component={Menu} />
+    <Switch>
+      <Route exact path="/" component={Scenics} />
+      <Route path="/sort/:sort" component={Scenics} />
+    </Switch>
   </div>
 );
 
 export default App;
 ```
+
+App组件是整个应用的根组件，它由组件`<Menu />`和` <Scenics />`组成。这里的Menu将一直显示在页面中，通过`<Switch>`会显示不同路径下的Scenics组件。
+
+##### 4. Menu 与 Scenics
+
+```javascript
+//<Menu />
+const Menu = ({ match }) => (
+  <div className="menu">
+    <NavLink className="item" style={match.isExact ? selectedStyle : {}} to="/">热门</NavLink>
+    <NavLink className="item" activeStyle={selectedStyle} to="/sort/title">名字</NavLink>
+    <NavLink className="item" activeStyle={selectedStyle} to="/sort/rating">星数</NavLink>
+  </div>
+);
+```
+Menu组件中使用了`<NavLink>`来进行不同条件的选项显示。当选项被选中时，呈现选中的样式，以及导航到不同的路径，通过路径传递的`sort`参数来筛选相应的数据结果。
+
+```javascript
+//<Scenics />
+export const Scenics = connect(
+  ({ scenics }, { match }) => ({
+    scenics: sortScenics(scenics, match ? match.params.sort : 'popularize'),
+  }),
+  dispatch => ({
+    onRate(id, rating) {
+      dispatch(rateScenic(id, rating));
+    },
+  }),
+)(ScenicList);
+```
+Scenics是使用react-redux的connect函数生成的一个 *容器组件*，我们通过传递外部state对象，以及Router的match对象，经过sortScenics方法，返回一个对象`{scenics:value}`，最终转换为 UI 组件ScenicList的参数。再建立 UI 组件的参数到store.dispatch方法的映射，及是ScenicList组件的onRate事件。
+
+##### 5. 一系列UI组件
+
+我们的ScenicList组件是由若干Scenic组件组成，Scenic又是由StarRating和其他组件组成，StarRating划分到最小的Star组件。它们的关系大致是：
+
+<img src="../images/p2_20.png" width="60%" height="auto" />
+
+###### 5.1 Star
+
+```javascript
+//<Star />
+const Star = ({ selected = false, onClick = f => f }) => (
+  <div
+    className={(selected) ? 'star selected' : 'star'}
+    onClick={onClick}
+    role="button"
+    tabIndex="0"
+  />
+);
+```
+Star是星星组件，通过传递给他的参数，我们显示它是选中/未选中状态。以及点击事件。role与tabIndex属性是Airbnb的ESLint规范中强调的一些做法，具体可以查看[相关规则](https://github.com/evcohen/eslint-plugin-jsx-a11y/blob/master/docs/rules/no-static-element-interactions.md)。
+
+###### 5.2 StarRating
+
+```javascript
+//<StarRating />
+const StarRating = ({ starsSelected = 0, totalStars = 5, onRate = f => f }) => (
+  <div className="star-rating">
+    {[...Array(totalStars)].map((n, i) => (
+      <Star
+        key={window.parseInt(i.toString())}
+        selected={i < starsSelected}
+        onClick={() => onRate(i + 1)}
+      />
+    ))}
+    <p>你给它{starsSelected}星，满分{totalStars}星</p>
+  </div>
+);
+```
+
+StarRating组件有3个参数，starsSelected选中的数量，totalStars总共的个数，以及onRate方法，通过总星星个数来渲染Star，并根据starsSelected来设置当前星星是否被选中。以及注册每个星星的onClick事件。
+
+###### 5.3 Scenic
+
+```javascript
+//<Scenic />
+class Scenic extends Component {
+  render() {
+    const {
+      id, title, tag, popularize, background, address, rating, onRate,
+    } = this.props;
+    return (
+      <div className="scenic" data-id={id}>
+        <img alt="" className="bg" src={background || BgDefault} />
+        <p className="title">{title}</p>
+        <div className="starbox">
+          <StarRating starsSelected={rating} onRate={onRate} />
+        </div>
+        <p className="popularize">{popularize}</p>
+        <p className="tag">{tag}</p>
+        <p className="address">{address}</p>
+      </div>
+    );
+  }
+}
+```
+
+###### 5.4 ScenicList
+
+```javascript
+const ScenicList = ({ scenics = [], onRate = f => f }) => (
+  <div className="scenic-list">
+    {(scenics.length === 0) ? <p className="no-tip">景区：0</p>
+      : scenics.map(s => (
+        <Scenic
+          key={s.id}
+          {...s}
+          onRate={rating => onRate(s.id, rating)}
+        />
+      ))}
+  </div>
+);
+```
+
+##### 6. 状态与数据
+
+使用redux来管理应用数据流，我们需要做下面几件事：
+
+* 创建store
+* 添加中间件
+* 创建Actions
+* 创建Reducers
+
+###### 6.1 数据请求
+
+状态管理就是数据管理，回忆一下之前是怎样向服务器请求数据的？[std7](../../std/std7/menu)中我们使用了`fetch()`函数在组件的生命周期函数：`componentDidMount()`中，向服务器请求数据并在返回后修改了程序的State。那在redux中应该如何做呢？
+
+我们知道redux中通过store.dispatch(Action)来分发Action，以达到更新State的目的，而Action Creator（动作生成器）是用来生成Action的方法，在ActionCreator中，我们封装了生成Action的细节，它包含了成功创建一个Action的所有逻辑，在这里应该存放所有和后端API交互逻辑相关的内容，所以我们可以在此执行“异步操作”（数据请求等）。
+
+
+
+

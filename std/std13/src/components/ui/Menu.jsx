@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import '../../css/common.css';
 import '../../css/Menu.css';
 
-const selectedStyle = { color: 'red' };
+const selectedStyle = { color: '#cc0373',backgroundColor: '#ffffff' };
 
 const Menu = ({ match }) => (
   <div className="menu">

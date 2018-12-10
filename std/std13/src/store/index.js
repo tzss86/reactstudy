@@ -1,5 +1,6 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
-import { scenics } from './reducers';
+import thunk from 'redux-thunk';
+import { scenics, fetching } from './reducers';
 import stateData from '../../data/initialState';
 
 const logger = store => next => (action) => {
@@ -18,12 +19,11 @@ const saver = store => next => (action) => {
   return result;
 };
 
-const storeFactory = (initialState = stateData) => applyMiddleware(logger, saver)(createStore)(
-  combineReducers({ scenics }),
-  (localStorage['redux-store'])
-    ? JSON.parse(localStorage['redux-store'])
-    : initialState,
-);
-
+const storeFactory = (initialState = stateData) => {
+  const ls = localStorage['redux-store'];
+  return applyMiddleware(thunk, logger, saver)(createStore)(
+    combineReducers({ scenics, fetching }), ls ? JSON.parse(ls) : initialState,
+  );
+};
 
 export default storeFactory;
