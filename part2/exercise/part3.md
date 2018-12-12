@@ -134,7 +134,7 @@ const StarRating = ({ starsSelected = 0, totalStars = 5, onRate = f => f }) => (
   <div className="star-rating">
     {[...Array(totalStars)].map((n, i) => (
       <Star
-        key={window.parseInt(i.toString())}
+        key={window.parseInt(i.toString())} //用index当中key被认为是“反模式”，此处星星组件只是纯展示，不会有排序/增加等情况，所以可用。
         selected={i < starsSelected}
         onClick={() => onRate(i + 1)}
       />
@@ -179,7 +179,7 @@ const ScenicList = ({ scenics = [], onRate = f => f }) => (
     {(scenics.length === 0) ? <p className="no-tip">景区：0</p>
       : scenics.map(s => (
         <Scenic
-          key={s.id}
+          key={s.id}//利用景区的id值作为唯一的key，在后续重新排序时react根据key来确定是否是同一组件
           {...s}
           onRate={rating => onRate(s.id, rating)}
         />
