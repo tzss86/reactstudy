@@ -1,8 +1,6 @@
 # React学习
 ------
-记录日常学习小结
-
-[http://liruii.com/reactstudy/README.html]
+记录学习总结
 
 ## 目录
 * [准备工作](./prepare/README.md) 
