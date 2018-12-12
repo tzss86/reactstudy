@@ -19,6 +19,13 @@ export const fetchScenicData = () => (dispatch) => {
 
   fetch('http://mp.1trip.com/api/v1/scenicservice/overview/distance/0?user_lng=104.06792346&user_lat=30.67994285')
     .then(response => response.json())
+    .catch(error => {
+      console.error('Error:', error);
+      dispatch({
+          type: Constants.FETCH_SCENIC,
+          msg: 'error',
+        });
+    })
     .then((data) => {
       if (data.status) {
         const res = data.result.list.map(v => ({
@@ -36,6 +43,11 @@ export const fetchScenicData = () => (dispatch) => {
         });
         const action = initListAction(res);
         dispatch(action);
+      } else {
+        dispatch({
+          type: Constants.FETCH_SCENIC,
+          msg: 'error',
+        });
       }
     });
 };

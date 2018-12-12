@@ -192,10 +192,10 @@ const ScenicList = ({ scenics = [], onRate = f => f }) => (
 
 使用redux来管理应用数据流，我们需要做下面几件事：
 
-* 创建Action
 * 创建store
 * 添加中间件
-* 创建Reducers
+* 创建Reducers/创建Actions
+* 利用`react-redux`传递Store和创建容器组件(containers)
 
 ###### 6.1 数据结构
 
@@ -273,13 +273,128 @@ saver中间件是把应用State树通过localStorage方式保存在本地。
 
 `local ? JSON.parse(local) : initialState` 判断本地是否存在数据，若不存在就使用`initialState = stateData`即是initialState.json导入的初始化数据。
 
-###### 6.2 数据请求
+###### 6.3 数据处理
+
+Reducers是State树对应的各部分数据的具体处理方案，通过reducer来处理不同的action，reducer是纯函数，接收state与action，返回新的state。
+
+`const scenics = (state = [], action = {type: null}) => { return []}`
+
+类似上面的scenics函数，我们处理了scenics的某些action，使之生成新的scenics list。
+
+参数之一的action是具体的更新描述，为了简化分发action的工作，我们使用Action生成器来创建Action。Action生成器 传入一些必要的参数，返回一个新的Action对象。类似下面的表示：
+
+`export const rateScenic = (id, rating) => ({
+  type: Constants.RATE_SCENIC,
+  id,
+  rating,
+});`
+
+上面的rateScenic是同步的，传入后立马返回结果，下面将介绍异步情况。
+
+###### 6.4 数据请求
 
 状态管理就是数据管理，回忆一下之前是怎样向服务器请求数据的？[std7](../../std/std7/menu)中我们使用了`fetch()`函数在组件的生命周期函数：`componentDidMount()`中，向服务器请求数据并在返回后修改了程序的State。那在redux中应该如何做呢？
 
 我们知道redux中通过store.dispatch(Action)来分发Action，以达到更新State的目的，而Action Creator（动作生成器）是用来生成Action的方法，在ActionCreator中，我们封装了生成Action的细节，它包含了成功创建一个Action的所有逻辑，在这里应该存放所有和后端API交互逻辑相关的内容，所以我们可以在此执行“异步操作”（数据请求等）。
 
-同步Action：
+```javascript
+export const fetchScenicData = () => (dispatch) => {
+  dispatch({
+    type: Constants.FETCH_SCENIC,
+    msg: 'pending',
+  });
+
+  fetch('http://test.com/api/v1/scenicservice/scenics')
+    .then(response => response.json())
+    .then((data) => {
+      if (data.status) {
+        const res = data.result.list.map(v => ({
+          id: v._id,
+          title: v.name,
+          tag: v.tag,
+          address: v.address,
+          popularize: v.popularize,
+          background: v.newcover ? v.newcover.url : '',
+          rating: 0,
+        }));
+        dispatch({
+          type: Constants.FETCH_SCENIC,
+          msg: 'finish',
+        });
+        const action = initListAction(res);
+        dispatch(action);
+      }
+    });
+};
+```
+fetchScenicData返回的不是具体的Action，而是一个函数，它的第一个参数是dispatch，我们在向服务器拉取数据之前利用dispatch分发一个Action，将应用的state树中的`fetching`更新为`pending`。然后利用Fetch API 请求后台数据。完成请求时在根据结果更新`fetching`，成功：finish，错误：error。然后处理完数据格式后，分发Constants.INIT_LIST_ACTION来更新scenics数据。
+
+###### 6.5 传递Store和创建容器组件
+
+```javascript
+const store = storeFactory();
+ReactDOM.render(
+  <Provider store={store}>
+    <HashRouter>
+      <App />
+    </HashRouter>
+  </Provider>,
+  document.getElementById('app'),
+);
+```
+```javascript
+const mapStateToProps =({scenics},{match}) => {
+  return { 
+    scenics: sortScenics(scenics, match.params.sort)
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return { 
+    onRate(id, rating){
+      dispatch(rateScenic(id, rating));
+    },
+    onFetch(){
+      dispatch(fetchScenicData());
+    }
+  };
+}
+export const Scenics = connect(
+ mapStateToProps,
+ mapDispatchToProps
+)(ScenicList);
+```
+`react-redux`提供来connect()函数来链接UI组件与外部state，生成一个容器组件。mapStateToProps即是将state映射到组件的props，mapDispatchToProps用来将事件操作映射到组件props。
+
+我们修改ScenicList，
+
+```javascript
+class ScenicList extends Component {
+  componentDidMount() {//在此请求scenics数据
+    const { onFetch = f => f } = this.props;
+    onFetch();
+    console.log('loading data...');
+  }
+
+  render() {
+    const { scenics = [], onRate = f => f } = this.props;
+    return (
+      <div className="scenic-list">//根据scenics属性来渲染Scenic
+        {(scenics.length === 0) ? <p className="no-tip">景区：0</p>
+          : scenics.map(s => (
+            <Scenic
+              key={s.id}
+              {...s}
+              onRate={rating => onRate(s.id, rating)}
+            />
+          ))}
+      </div>
+    );
+  }
+}
+```
+
+[回顾/小结](./part4.md)
 
 
 

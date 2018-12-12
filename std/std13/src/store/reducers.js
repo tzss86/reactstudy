@@ -24,8 +24,8 @@ export const scenics = (state = [], action = { type: null }) => {
   }
 };
 
-export const fetching = (state = 'none', action = {type:null}) => {
-  switch (action.type){
+export const fetching = (state = 'none', action = { type: null }) => {
+  switch (action.type) {
     case Constants.FETCH_SCENIC:
       return action.msg ? action.msg : state;
     default:
