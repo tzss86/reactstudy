@@ -1,0 +1,145 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "\5FAE\8F6F\96C5\9ED1";
+    font-size: 62.5%;
+    border: none;
+	outline: none;
+}
+
+
+a,ul,li {
+    list-style: none;
+    text-decoration: none;
+    display: block;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+.content {
+    width: 100%;
+}
+
+.clear {
+    clear: both;
+}
+
+@font-face {
+    font-family: myFirstFont;
+    src: url(/fonts/simkai.ttf) format("truetype"),
+         url(/fonts/simkai.eot) format('eot'),
+         url(/images/simkai.svg) format('svg'),
+         url(/fonts/simkai.woff) format('woff');
+}
+
+.menu {
+	display: flex;
+	flex-flow: row nowrap;
+  	justify-content: space-around;
+  	align-items: center;
+  	background-color: #333333;
+  	opacity: 0.8;
+}
+
+.menu .item {
+	font-size: 1.6rem;
+	padding: 8px;
+	color: white;
+}
+div.star {
+  cursor: pointer;
+  height: 25px;
+  width: 25px;
+  margin: 2px;
+  float: left;
+  background-color: rgba(0,0,0,0.5);
+  clip-path: polygon(50% 0%, 63% 38%, 100% 38%, 69% 59%, 82% 100%, 50% 75%, 18% 100%, 31% 59%, 0% 38%, 37% 38%);
+}
+
+div.selected {
+    background-color: #aa1311;
+    opacity: 0.6;
+}
+
+.scenic{
+	width: 100%;
+    display: block;
+    position: relative;
+    max-height: 24vh;
+    overflow: hidden;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 2px 2px 4px #888;
+}
+
+.scenic img{
+	width: 100%;
+	border-radius: 8px;
+}
+
+.scenic .title{
+	font-size: 2.6rem;
+    font-family: MyFirstFont;
+    position: absolute;
+    top: 2%;
+    left: 2%;
+    background-color: rgba(255,255,255,0.7);
+}
+
+.scenic .starbox{
+	position: absolute;
+    top: 40%;
+    right: 0;
+    text-align: center;
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255,255,255,0.4);
+    width: 100%;
+}
+
+.scenic .popularize{
+	position: absolute;
+    top: 0;
+    right: 0;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 1.4rem;
+    background-color: rgba(0,0,0,0.4);
+    padding: 1%;
+}
+
+.scenic .tag{
+	position: absolute;
+    bottom: 0;
+    right: 0;
+    color: #ffffff;
+    font-size: 1.2rem;
+    background-color: rgba(0,0,0,0.4);
+    padding: 1%;
+}
+
+.scenic .address{
+	position: absolute;
+    bottom: 0;
+    left: 0;
+    color: #ffffff;
+    font-size: 1rem;
+        background-color: rgba(0,0,0,0.4);
+    padding: 1%;
+}
+.scenic-list{
+	width: 94%;
+    margin: 3%;
+    border-radius: 8px;
+}
+
+.no-tip{
+	font-family: myFirstFont;
+	font-size: 1.6rem;
+    text-align: center;
+    padding: 2%;
+    color: #cccccc;
+}
+
+/*# sourceMappingURL=main.95eddb5b426bb258d0f1.css.map*/
