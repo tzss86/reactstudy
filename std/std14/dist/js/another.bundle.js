@@ -56,7 +56,7 @@
 /******/ 	// undefined = chunk not loaded, null = chunk preloaded/prefetched
 /******/ 	// Promise = chunk loading, 0 = chunk loaded
 /******/ 	var installedChunks = {
-/******/ 		"app": 0
+/******/ 		"another": 0
 /******/ 	};
 /******/
 /******/ 	var deferredModules = [];
@@ -147,46 +147,22 @@
 /******/
 /******/
 /******/ 	// add entry module to deferred list
-/******/ 	deferredModules.push(["./src/index.js","vendors~another~app"]);
+/******/ 	deferredModules.push(["./src/another-module.js","vendors~another~app"]);
 /******/ 	// run deferred modules when ready
 /******/ 	return checkDeferredModules();
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./src/index.js":
-/*!**********************!*\
-  !*** ./src/index.js ***!
-  \**********************/
+/***/ "./src/another-module.js":
+/*!*******************************!*\
+  !*** ./src/another-module.js ***!
+  \*******************************/
 /*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _print_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./print.js */ \"./src/print.js\");\n/* harmony import */ var _math_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./math.js */ \"./src/math.js\");\n/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash */ \"./node_modules/lodash/lodash.js\");\n/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_2__);\n\n\n\n\nvar component = function component() {\n  if (true) {\n    console.log('Looks like we are in development mode!');\n  }\n\n  var ele = document.createElement('div');\n  var btn = document.createElement('button');\n  var arr = ['hello', 'webpack'];\n  var last = Object(_math_js__WEBPACK_IMPORTED_MODULE_1__[\"cube\"])(5);\n  console.log(lodash__WEBPACK_IMPORTED_MODULE_2___default.a.join(['1', '2', '2!'], ' '));\n  ele.innerHTML = [last].concat(arr).join('-');\n  btn.innerHTML = 'click me';\n  btn.onclick = _print_js__WEBPACK_IMPORTED_MODULE_0__[\"default\"];\n  ele.appendChild(btn);\n  return ele;\n};\n\ndocument.body.appendChild(component());\n\n//# sourceURL=webpack:///./src/index.js?");
-
-/***/ }),
-
-/***/ "./src/math.js":
-/*!*********************!*\
-  !*** ./src/math.js ***!
-  \*********************/
-/*! exports provided: square, cube */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"square\", function() { return square; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"cube\", function() { return cube; });\nfunction square(x) {\n  return x * x;\n}\nfunction cube(x) {\n  return x * x * x;\n}\n\n//# sourceURL=webpack:///./src/math.js?");
-
-/***/ }),
-
-/***/ "./src/print.js":
-/*!**********************!*\
-  !*** ./src/print.js ***!
-  \**********************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return printMe; });\nfunction printMe() {\n  console.log('i get called from print.js');\n}\n\n//# sourceURL=webpack:///./src/print.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ \"./node_modules/lodash/lodash.js\");\n/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);\n\nconsole.log(lodash__WEBPACK_IMPORTED_MODULE_0___default.a.join(['Another', 'module', 'loaded!'], ' '));\n\n//# sourceURL=webpack:///./src/another-module.js?");
 
 /***/ })
 

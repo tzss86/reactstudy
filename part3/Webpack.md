@@ -165,3 +165,20 @@ const common = require('./webpack.common.js');
 module.exports = merge(common, {
   mode: 'production'
 });
+```
+
+#### 4. Code splitting
+
+如果输入块之间存在任何重复的模块，则它们将包含在两个包中。它不够灵活，不能用于动态分割核心应用程序逻辑的代码。SplitChunksPlugin 可以让我们提取公共代码。
+
+在webpack.common.js中添加：
+
+```javascript
+optimization: {
+     splitChunks: {
+       chunks: 'all'
+     }
+   }
+```
+可以看到共同引用的`lodash`被提出来单独一个文件，a.bundle.js 与b.bundle.js 中不再重复引用。
+

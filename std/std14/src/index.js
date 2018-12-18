@@ -1,5 +1,7 @@
 import printMe from './print.js';
 import { cube } from './math.js';
+import _ from 'lodash';
+
 
 const component = () => {
 
@@ -10,6 +12,10 @@ const component = () => {
 	const btn = document.createElement('button');
 	const arr = ['hello','webpack'];
 	const last = cube(5);
+
+	console.log(
+  _.join(['1', '2', '2!'], ' ')
+);
 
 	ele.innerHTML = [last,...arr].join('-');
 	btn.innerHTML = 'click me';
