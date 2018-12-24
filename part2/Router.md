@@ -230,5 +230,48 @@ about、events、products和contact页面都使用了<PageTemplate>模版，我�
         - goForward()：将历史堆栈中的指针向前进1
 
 
-        
+#### 4. React Router 原理
+
+##### 4.1 js中的window.history
+
+* H5的History API 提供一系列操作浏览器历史记录的方法，可以实现无刷新更改地址栏链接，结合AJAX，实现在同一页面进行AJAX数据刷新的同时，用户可以操作浏览器的前进后退收藏及分享地址等常规功能。我们通过History API 来改变地址栏地址，也方便搜索引擎SEO。
+* 改变地址栏地址：`pushState()`
+* 前进：`window.history.forward()`
+* 后退：`window.history.back()`
+* go:`window.history.go()` -1：后退一页 0：刷新当前页 1：前进一页
+* 新增URL必须是同源的。
+
+```javascript
+//window.history.pushState(data,title,url)
+//例如当前浏览器地址：https://github.com/tzss86/reactstudy
+window.history.pushState(null,null,'/jsstudy');
+//浏览器地址会变成：https://github.com/tzss86/jsstudy
+
+//监听地址改变
+window.addEventListener("popstate", function(e) {
+    var state = e.state;//传入pushState的第一个参数data
+    console.log(state)
+});
+
+//若不想新创建一个历史记录，可以用replaceState()替换当前记录。
+```
+
+##### 4.2 js中的window.location.hash
+
+* 获取当前URL地址的"#"哈希值 
+
+```javascript
+//例如：https://github.com/tzss86/part1#123
+window.location.hash;//#123
+window.location.replace('#456');//https://github.com/tzss86/part1#456
+//监听hash值变化
+window.addEventListener('hashchange',function(event){
+   console.log(event);
+});
+```
+
+##### 4.3 React-Router
+
+* 基于上面两种前端路由方案的一次封装，使能够识别将url的变化与componet渲染进行匹配。
+
 [返回顶端](#路由) [返回目录](../README.md) 
