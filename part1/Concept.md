@@ -65,7 +65,9 @@ React.createElement方法第一个参数是元素，可以是React自带元素(�
 允许程序时使用本地服务器，这样的好处是可以使用AJAX/XHR请求，按照如下方式安装本地服务器：
     - `sudo npm install -g http-server` 全局安装后进入项目文件夹，输入：`http-server`命令，及可运行起来。
     
-    <img src="./images/p1_0.png" width="50%" height="auto"/>
+
+<img src="./images/p1_0.png" width="50%" height="auto"/>
+
     
 * 打开浏览器查看：`localhost:8080`
 
