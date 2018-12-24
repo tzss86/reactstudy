@@ -304,7 +304,7 @@ const Link = props => <a onClick={props.handleClick} href="#">{props.label}</a>;
 const Logo = props => <img onClick={props.handleClick} width="40" src="images/logo.png" href="#"/>
 ```
 
-`<Button> <Link> <Logo>`是可以复用的展示组件，封装它们并添加公共的新功能：点击后显示网站到`<frame>`中，并且需要使用公共的label属性值。
+`<Button> <Link> <Logo>`是可以复用的展示组件，封装它们并添加公共的新功能：点击后显示网站到`<iframe>`中，并且需要使用公共的label属性值。
 
 ```javascript
 const Loader = (Component) => {//创建一个高阶组件

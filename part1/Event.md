@@ -35,7 +35,7 @@
 
 #### 3. React事件真相
 
-* React事件处理方式与jQuery或原生js不同，jQuery或原生js是将事件监听器直接添加到DOM节点上，而React是通过委托到顶级父节点也就是document上，这样做的好处是处理列表时更快。
+* React事件处理方式与jQuery或原生js不同，jQuery或原生js是将事件监听器直接添加到DOM节点上，而React是通过 *委托*到顶级父节点也就是document上，这样做的好处是处理列表时更快。
 * React在根文档上复用事件监听器，因此当多个元素上都有mouseover事件时，在`getEventListener(document)`返回的结果中每一种事件类型只有一个事件。
 * React事件对象(event)是封装了可兼容不同浏览器的特殊类：`SyntheticEvent`，保证了在所有浏览器中行为一致。可以通过event访问一些属性：
 
