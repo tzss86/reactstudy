@@ -133,7 +133,7 @@ export const Whoops404 = ({ location }) =>
     </div>
 ```
 
-<Route>组件有3个属性传递给它渲染的组件，分别是`match`， `location`， `history` 。所以组件Whoops404可以访问Route 的属性location。location是一个对象，它表示应用程序的位置，有下面的基本属性可以访问：
+`<Route>`组件有3个属性传递给它渲染的组件，分别是`match`， `location`， `history` 。所以组件Whoops404可以访问Route 的属性location。location是一个对象，它表示应用程序的位置，有下面的基本属性可以访问：
 
 ```javascript
 {
