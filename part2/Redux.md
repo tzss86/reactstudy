@@ -9,7 +9,7 @@
 
 #### 2. 在React之外管理State
 * 在React之外管理State会减少大量类组件的使用，可以使用很多无状态组件让应用更加明确化和易于复用、测试。
-* Facebook因此推出了一种设计模式：Flux ——》 旨在保持数据的单向流动。
+* Facebook因此推出了一种设计模式：Flux ——> 旨在保持数据的单向流动。
 * Flux架构：把State数据存放在Store中，Store保留和更改数据，从而更新视图
 
 <img src="./images/p2_4.png" width="50%" height="auto">
@@ -103,20 +103,20 @@ color({},action);
 color Reducer 可以处理两种类型的Action，添加一个color 和 给某个color打分。
 
 ##### 3.3 Store
-Redux的Store是保持State数据和处理State更新的地方，Flux框架中，Store是可以多个共存的，每个Store只专注于特定的数据集，而Redux中Store是唯一的，只有一个。Store有很多常见的方法，来处理State。
+Redux的Store是保存State数据和处理State更新的地方，Flux框架中，Store是可以多个共存的，每个Store只专注于特定的数据集，而Redux中Store是唯一的，只有一个。Store有很多常见的方法，来处理State。
 
 * 获取应用程序的State: `store.getState()`
 * 创建store： `const store = createStore(Reducers, initStateData)`
 * 合并多个Reducer： `combineReducers({ colors, sort })`
 * 分发Action： `store.dispatch(Action)`
-* 监听/订阅 store： `store.subscribe(callback)` 每次分发完一个Action就会触发一次
+* 监听/订阅（观察者模式） store： `store.subscribe(callback)` 每次分发完一个Action就会触发一次
 * 取消监听/订阅 store： `store.subscribe(callback)()`
 
 总之，Store是Redux应用程序中保存和管理State数据的地方，也是通过store分发Action的形式来改变State数据。
 
 ```javascript
 //自定义combineReducers()
-const combinedReducers (reducers) => {
+const combinedReducers = (reducers) => {
     return (state={},action) => {
         return Object.keys(reducers).reduce((nextState,key) => {
             nextState[key] = reducers[key](state[key],action);
@@ -127,6 +127,7 @@ const combinedReducers (reducers) => {
 ```
 
 ##### 3.4 Action生成器
+
 Action对象是通过简单小而美的js语法表示的，Action生成器就是返回这类语法格式的函数。可以为每一种Action类型添加一个对应的生成器：
 ```javascript
 const addColor = (title,color) => ({
@@ -149,6 +150,7 @@ store.dispatch(addColor("Little Pink","#F142FF"));
 我们应该将所有和后端API交互的逻辑内容放到Action生成器中。
 
 ##### 3.5 中间件
+
 中间件可以扮演store分发管道的角色。
 
 #### 4. React-Redux
