@@ -62,8 +62,8 @@ ReactDOM.render(//挂在到真实DOM元素中去
 )
 ```
 React.createElement方法第一个参数是元素，可以是React自带元素(如：'h1','div','p')与html相同，也可以是自定义组件(如：HelloWorld)。第二个参数是对象形式的属性值。第三个以及后续参数是子元素。上面代码就是创建了一个包含3个HelloWorld的div。每个HelloWorld由一个h1构成。
-允许程序时使用本地服务器，这样的好处是可以使用AJAx/XHR请求，按照如下方式安装本地服务器：
-    - `sudo npm install -g http-server` 全局安装后进入项目文件夹，输入：`http-server`命令，及可允许起来。
+允许程序时使用本地服务器，这样的好处是可以使用AJAX/XHR请求，按照如下方式安装本地服务器：
+    - `sudo npm install -g http-server` 全局安装后进入项目文件夹，输入：`http-server`命令，及可运行起来。
     
     - <img src="./images/p1_0.png" width="50%" height="auto"/>
     
