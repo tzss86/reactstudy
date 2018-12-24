@@ -5,6 +5,7 @@ React中组件的状态是非常重要的核心概念，通过状态可以创建
 <img src="./images/p1_4.png" width="40%" height="auto"/>
 
 #### 1. 使用状态
+
 * 访问状态值通过`this.state.NAME`访问
 * 状态是用了存储可变数据的，必须进行状态对象的初始化：`this.state={...}`
 * 更新状态必须使用`this.setState({},callback)`方法，第一个参数是需要更新的状态数据对象，里面的属性会覆盖旧的属性值，只会改变传给它的属性，没传的属性不会改变。
@@ -119,5 +120,33 @@ const ClockDisplay = props => {
 `<ClockDisplay />`与`<DigitalDisplay />`都是无状态的组件，纯粹显示UI。
 
 <img src="./images/p1_6.png" width="50%" height="auto" style="margin-left: 5%" />
+
+
+#### 4. this.setState()
+
+>有人问我：this.setState()是同步还是异步？
+
+* 我们发现`this.setState()`的第二个参数是callback，难道它“异步”的，为什么呢？
+* 异步的原因并不是setState方法里有`setTimeout`或返回`Promise`等异步执行，而是因为setState函数不仅要更新状态值，还需要负责触发re-render，重新渲染里面有React核心的diff算法，最终才能决定是否进行re-render，在连续调用setState函数还会进行合并操作，减少re-render次数。
+* 所以记住：
+
+>setState不会立刻改变React组件中state的值；
+
+>setState通过引发一次组件的更新过程来引发重新绘制；
+
+>多次setState函数调用产生的效果会合并。
+
+* 官方推荐的在setState()后获取准确新状态的方式是：在[组件生命周期](./Lifecycle.md)里处理：
+
+```javascript
+componentDidUpdate(){
+  console.log(this.state.value)
+}
+```
+因为调用一次setState()会触发组件生命周期的若干函数，见下图：
+
+<img src="./images/p1_17.png" width="50%" height="auto" />
+
+* 当应用复杂后，我们可以使用[Redux](../part2/Redux.md)或MobX框架来剥离React的State，让其受控。
 
 [返回顶端](#组件状态) [返回目录](../README.md) 
