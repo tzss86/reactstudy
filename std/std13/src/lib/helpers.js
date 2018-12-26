@@ -33,3 +33,13 @@ export const sortScenics = (scenics, sortBy) => compose(
   fn => [...scenics].sort(fn),
   locateSortFunction,
 )(sortBy);
+
+export const getFirstArrayItem = array => array[0]
+
+export const filterArrayById = (array, id) =>
+    array.filter(item => item.id === id)
+
+export const findById = compose(
+    getFirstArrayItem,
+    filterArrayById
+)

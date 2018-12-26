@@ -228,7 +228,7 @@ import thunk from 'redux-thunk';
 import { scenics, fetching } from './reducers';
 import stateData from '../../data/initialState';
 
-const logger = store => next => (action) => {
+const logger = store => next => action => {
   console.groupCollapsed('dispatching', action.type);
   console.log('prev state', store.getState());
   console.log('action', action);
@@ -238,7 +238,7 @@ const logger = store => next => (action) => {
   return result;
 };
 
-const saver = store => next => (action) => {
+const saver = store => next => action => {
   const result = next(action);
   localStorage['redux-store'] = JSON.stringify(store.getState());
   return result;

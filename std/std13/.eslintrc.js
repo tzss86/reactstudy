@@ -11,6 +11,7 @@ module.exports = {
 	  	"no-console": 0,
 	  	"react/prefer-stateless-function": 0,
 	  	"jsx-a11y/click-events-have-key-events": 0,
-	  	"no-underscore-dangle": ["error", { "allow": ["_id"] }]
+	  	"no-underscore-dangle": ["error", { "allow": ["_id"] }],
+	  	"jsx-a11y/no-noninteractive-element-interactions":0
 	}
 };

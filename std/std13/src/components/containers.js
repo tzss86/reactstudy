@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
 import ScenicList from './ui/ScenicList';
+import ScenicDetail from './ui/ScenicDetail';
 import { rateScenic, fetchScenicData } from '../actions';
-import { sortScenics } from '../lib/helpers';
+import { sortScenics, findById } from '../lib/helpers';
 
 const mapStateToProps =({scenics},{match}) => {
   return { 
@@ -14,12 +15,15 @@ const mapDispatchToProps = dispatch => {
     onRate(id, rating){dispatch(rateScenic(id, rating))},
     onFetch(){dispatch(fetchScenicData())}
     }
-    
 }
+
 export const Scenics = connect(
  mapStateToProps,
  mapDispatchToProps
 )(ScenicList);
 
+export const Scenic = connect(
+	({ scenics }, { match }) => findById(scenics, match.params.id)
+)(ScenicDetail);
 
 export default Scenics;

@@ -8,7 +8,6 @@ class ScenicList extends Component {
   componentDidMount() {
     const { onFetch = f => f } = this.props;
     onFetch();
-    console.log('loading data...');
   }
 
   render() {
