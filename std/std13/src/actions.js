@@ -12,7 +12,7 @@ export const initListAction = scenics => ({
 });
 
 export const fetchScenicData = () => (dispatch, getState) => {
-
+    console.log(getState());
   if(getState().fetching !== "finish"){
     dispatch({
       type: Constants.FETCH_SCENIC,

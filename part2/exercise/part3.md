@@ -298,7 +298,7 @@ Reducers是State树对应的各部分数据的具体处理方案，通过reducer
 我们知道redux中通过store.dispatch(Action)来分发Action，以达到更新State的目的，而Action Creator（动作生成器）是用来生成Action的方法，在ActionCreator中，我们封装了生成Action的细节，它包含了成功创建一个Action的所有逻辑，在这里应该存放所有和后端API交互逻辑相关的内容，所以我们可以在此执行“异步操作”（数据请求等）。
 
 ```javascript
-export const fetchScenicData = () => (dispatch) => {
+export const fetchScenicData = () => (dispatch, getState) => {
   dispatch({
     type: Constants.FETCH_SCENIC,
     msg: 'pending',
