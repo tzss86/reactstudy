@@ -1,7 +1,7 @@
 # React基础概念与JSX
 ------
 #### 1. React Core 与 React DOM
-* React 主要的包有ReactCore和ReactDOM，ReactCore(npm中是react.js)是核心部分，ReactDOM用于挂在元素到网页的DOM组件
+* React 主要的包有ReactCore和ReactDOM，ReactCore(npm中是react.js)是核心部分，ReactDOM用于挂载元素到网页的DOM组件
 * `React.createElement(ele,props,child,child)` 用于创建元素
 * `class CHILD extends React.Component{ render(){...}}` 用于创建自定义组件类
 * `ReactDOM.render()` 用于渲染组件到真实的DOM中去
@@ -10,11 +10,11 @@
 * React的属性与HTML属性非常相似，创建组件时，父组件为子组件分配属性。
     - `<TAG_NAME PROPERTY_NAME=VALUE/>` 方式传值
     - 代码中通过`this.props.PROPERTY_NAME` 来访问属性
-* 在底层，React属性名称将于标准HTML属性对比，若匹配，则渲染到html元素属性上，若不匹配，则不会渲染，但仍然可以通过`this.props.PROPERTY_NAME`访问。
+* 在底层，React属性名称将与标准HTML属性对比，若匹配，则渲染到html元素属性上，若不匹配，则不会渲染，但仍然可以通过`this.props.PROPERTY_NAME`访问。
 * 属性值视为组件内不可变的。
 
 #### 3. JSX
-* JSX是就js的一种扩展，对React.createElement提供简写方法： <NAME/>
+* JSX是js的一种扩展，对React.createElement提供简写方法： <NAME/>
 * 使用JSX创建元素：
     - `<name key1=value1 key2=value2><child1/><child2></name>`
 * JSX中输出变量使用花括号`{}`，可以在花括号中执行js表达式或者js代码
@@ -27,7 +27,7 @@
     
     <img src="./images/p1_1.png" width="20%" height="auto"/>
 
-    - index.html作为我们的入口，js文件夹存放react.js和react-dom.js库和新建的script1.js文件，script2.js是由script2.jsx文件转换生成的，不用管它。
+    - index.html作为我们的入口，js文件夹存放react.js和react-dom.js库和新建的script1.js文件，script2.js是由script2.jsx文件转义生成的，不用管它。
 * 我们首先不使用JSX方式来创建React组件，在index.html中添加React库和script1.js
 ```html
 <!DOCTYPE html>
@@ -38,12 +38,13 @@
     <title>std1</title>
 </head>
 <body>
-    <div id="content"></div><!--用于挂在React组件-->
+    <div id="content"></div><!--用于挂载React组件-->
     <script src="js/script1.js"></script>
 </body>
 </html>
 ```
 ```javascript
+//script1.js
 class HelloWorld extends React.Component { /*组件类HelloWorld继承自React.Component*/
 
     render(){//render()方法是必须的
@@ -56,7 +57,7 @@ var hw1 = React.createElement(HelloWorld,{id:'1',title:'A',lib:'A lib'});
 var hw2 = React.createElement(HelloWorld,{id:'2',title:'B',lib:'B lib'});
 var hw3 = React.createElement(HelloWorld,{id:'3',title:'C',lib:'C lib'});
 
-ReactDOM.render(//挂在到真实DOM元素中去
+ReactDOM.render(//挂载到真实DOM元素中去
     React.createElement('div',null,hw1,hw2,hw3),
     document.getElementById('content')
 )
@@ -76,6 +77,7 @@ React.createElement方法第一个参数是元素，可以是React自带元素(�
 #### 5. 第一个使用JSX的React程序
 * 继续在刚才的目录下添加jsx文件夹和新建一个script2.jsx文件
 ```javascript
+//script2.jsx
 class Hello extends React.Component {
     render(){
         return <h1 id={this.props.id} title={this.props.title}>
