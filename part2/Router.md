@@ -217,7 +217,7 @@ about、events、products和contact页面都使用了<PageTemplate>模版，我�
 
 <img src="./images/p2_5.png" width="80%" height="auto">
 
-*  `<Route>`的`match`属性和`history`
+*  `<Route>`的`match`属性和`history`属性
     - match属性是一个对象，它包含有关<Route path>如何与URL匹配的信息。 match对象包含以下属性：
         - params ： 从URL解析出来的参数，`<Route path="/about/:id/:city" component={About}` ，id值和city值都通过`this.props.match.params.id` 和 `this.props.match.params.city` 获取，如果是About组件获取，则可以`const About = ({match}) => {<h1>{match.params.id} {match.params.city}</h1>}`
         - isExact ：如果匹配整个URL，则为true
