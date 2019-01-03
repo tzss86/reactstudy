@@ -163,6 +163,51 @@ store.dispatch(addColor("Little Pink","#F142FF"));
 * 容器组件：将表现层组件和数据连接在一起的组件。
 * react-redux提供了`Provider` 它将Store添加到上下文对象中，`Connect()`函数创建出容器组件。
 
+>通过context上下文传递Store
+
+```javascript
+class Provider extends React.Component {
+    getChildContext(){
+        return {
+            store: this.props.store//定义store 通过上下文this.context访问
+        };
+    }
+    render(){
+        return this.props.children;//render传入<Provider>的子组件
+    }
+}
+Provider.childContextTypes = {
+    store: PropTypes.object
+};
+
+ReactDOM.render(
+    <Provider store={createStore(reducer)}>
+        <Content />
+    </Provider>,
+    document.getElementById('app')
+)
+
+//子组件中可以通过2种方式获取store
+//1.组件的第二个参数是context，解构出{store}
+const AddTodo = (props, {store}) =>{
+    store.getState()
+}
+AddTodo.contextTypes = {//必须声明
+    store: PropTypes.object
+};
+//2.使用this.context
+class AddTodo extends Component {
+    componentDidMount() {
+        const {store} = this.context;
+    }
+}
+AddTodo.contextTypes = {//必须声明
+    store: PropTypes.object
+};
+```
+
+>通过 `react-redux`框架传递Store
+
 ```javascript
 import { Provider } from 'react-redux';
 
@@ -176,7 +221,18 @@ render(
 
 ```javascript
 import { connect } from 'react-redux'
-​
+​const mapStateToProps =({scenics},{match}) => { //state, ownProps
+  return { 
+    scenics: sortScenics(scenics, match.params.sort)
+  };
+};
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return { 
+    onRate(id, rating){dispatch(rateScenic(id, rating))},
+    onFetch(){dispatch(fetchScenicData())}
+    }
+};
 const VisibleTodoList = connect(
   mapStateToProps,
   mapDispatchToProps

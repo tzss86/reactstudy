@@ -15,7 +15,7 @@ const mapDispatchToProps = dispatch => {
     onRate(id, rating){dispatch(rateScenic(id, rating))},
     onFetch(){dispatch(fetchScenicData())}
     }
-}
+};
 
 export const Scenics = connect(
  mapStateToProps,
