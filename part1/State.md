@@ -33,6 +33,7 @@ React中组件的状态是非常重要的核心概念，通过状态可以创建
 ```
 先写script.jsx
 ```javascript
+//script.jsx
 ReactDOM.render(
     <Clock />,//渲染一个Clock组件
     document.getElementById('content')
@@ -40,6 +41,7 @@ ReactDOM.render(
 ```
 再创建clock.jsx 的`<Clock />`组件
 ```javascript
+//clock.jsx
 class Clock extends React.Component {
     constructor(props){//在构造函数中初始化状态值
         super(props);//执行父类构造函数
@@ -72,9 +74,9 @@ class Clock extends React.Component {
 <img src="./images/p1_5.png" width="40%" height="auto" style="margin-left: 5%" />
 
 #### 3. 无状态组件与有状态组件
-* 无状态组件是指没有状态或任何React生命周期事件/方法的组件。它存在的目的仅仅是渲染视图。
-* 无状态组件可以使用函数代替组件类来创建，非常简单，输入属性参数，返回UI元素即可。
-* `const Link = props => <h1>{this.props.title}</h1>`
+* `无状态组件`是指没有状态或任何React生命周期事件/方法的组件。它存在的目的仅仅是渲染视图。
+* 无状态组件可以使用`函数`代替组件类来创建，非常简单，输入属性参数，返回UI元素即可。
+* 例：`const Link = props => <h1>{this.props.title}</h1>`
 * 请保持无状态组件的简洁性：没有状态，没有方法
 
 我们在std2项目中添加2个 *无状态组件* 用于输出一个纯粹的时钟UI
@@ -127,7 +129,7 @@ const ClockDisplay = props => {
 >有人问我：this.setState()是同步还是异步？
 
 * 我们发现`this.setState()`的第二个参数是callback，难道它“异步”的，为什么呢？
-* 异步的原因并不是setState方法里有`setTimeout`或返回`Promise`等异步执行，而是因为setState函数不仅要更新状态值，还需要负责触发re-render，重新渲染里面有React核心的diff算法，最终才能决定是否进行re-render，在连续调用setState函数还会进行合并操作，减少re-render次数。
+* 异步的原因并不是setState方法里有`setTimeout`或返回`Promise`等异步执行，而是因为`setState函数不仅要更新状态值，还需要负责触发re-render，重新渲染里面有React核心的diff算法，最终才能决定是否进行re-render，在连续调用setState函数还会进行合并操作，减少re-render次数`。
 * 所以记住：
 
 >setState不会立刻改变React组件中state的值；
