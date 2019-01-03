@@ -17,7 +17,7 @@
 #### 2. js模块介绍
 * CommonJS (使用`require() module.exports`语法)，用于服务器端(例如：Nodejs)，是同步方式加载模块
 * AMD (使用`require([moduleName],callback) define(fn)`语法)，是异步方式加载模块
-* ES6（ECMA2015）（使用`improt  from 'path' export`语法），是js语法层面的模块定义，在服务器端和浏览器通用。
+* ES6（ECMA2015）（使用`improt * from 'path' export`语法），是js语法层面的模块定义，在服务器端和浏览器通用。
 * CommonJS 模块输出值的拷贝，ES6 模块输出值的引用
 * CommonJS 模块运行时加载，ES6 模块编译时输出接口
 
@@ -37,7 +37,7 @@
         - `react 与 react-dom` 不再通过拷贝方式和`<script></script>`手动加入到html的方式使用`React`了，我们会通过模块导入语法使用React。
         - `babel-core ，babel-loader 与babel-preset-react` 处理ES6-ES5,JSX转换成JS
         - `webpack` 打包工具
-        - `css-loader 与style-loader` css加载器使得可以用js解析加载css，style加载器将css添加到html页面
+        - `css-loader 与 style-loader` css加载器使得可以用js解析加载css，style加载器将css添加到html页面
         - `react-hot-loader` react的热模块替换加载器（Hot Module Replacement），让代码更新后不必刷新浏览器来重新加载查看效果，提高开发效率
         - `webpack-dev-server` wds是一台Express开发服务器，它支持HMR
     - 安装完上面的10个库后，我们就可以继续搭建项目结构了。值的注意的是安装时可能遇上 *前提* 里讲的问题，可以参考里面的解决办法。
@@ -49,7 +49,7 @@
 #### 4. webpack.config.js
 ```javascript
 const webpack = require('webpack');//导入webpack
-
+const path = require('path');
 module.exports = {
   entry:[//设置入口
     'webpack-dev-server/client/?http://localhost:8080',//添加wds入口
@@ -57,10 +57,10 @@ module.exports = {
   ],
   output:{//添加打包输出的路径
       publicPath: 'js/',//设置wds需要访问的路径
-      path: __dirname + '/js/',//设置输出的bundle.js的路径
+      path: path.resolve(__dirname, '/js/'),//设置输出的bundle.js的路径
       filename: 'bundle.js'//设置输出的打包文件名
   },
-  devtool: '#sourcemap',//开启devtool，生成sourcemap在调试时使用
+  devtool: 'source-map',//开启devtool，生成sourcemap在调试时使用
   module: {
       rules: [
         { 
@@ -86,11 +86,13 @@ module.exports = {
   plugins: [new webpack.HotModuleReplacementPlugin()]//包含HMR插件
 }
 ```
-webpack.config.js的配置是多变和自主的，不同的应用场景需要的配置是不同的，而且包的版本也很重要，包的版本差异太则可能引起编译失败。
+webpack.config.js的配置是多变和自主的，不同的应用场景需要的配置是不同的，`而且包的版本也很重要，包的版本差异太则可能引起编译失败`。
 
 ##### 5. 模块化代码
+
 在jsx文件夹中添加2个文件app.jsx 和 content.jsx
 与以往的代码不同的是我们需要导入React ReactDOM 才能使用
+
 ```javascript 
 //content.jsx
 const React = require('react');

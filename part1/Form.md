@@ -1,12 +1,13 @@
 # 表单使用与组建扩展
 ------
 #### 1. 表单使用
-* 传统HTML表单元素的状态变化与用户输入同步，但是React是用声明方式来描述UI，输入需要动态反映到state属性中。
+* 传统HTML表单元素的`状态变化`与`用户输入`同步，但是React是用声明方式来描述UI，输入需要动态反映到state属性中。
 * 在React中，表单元素的值在render()中必须包含它的最新值，所以需要通过下面的步骤来实现组件内部状态与视图同步：
     - 在render()中使用来自state的值定义元素
     - 用onChange捕获表单元素的变更
     - 在事件处理函数中更新内部状态
     - 将值保存在state中，然后重新执行render()以更新视图
+
 ```javascript
 handleChange(event){
     this.setState({title:event.target.value});
@@ -152,7 +153,7 @@ render(){
 
 ##### 1.2 创建非受控组件
 * 使用受控组件是最佳实践，但有时未设置value值（即不是动态值也不是静态值），则此时的表单元素可能不受控制。典型的非受控组件：`<input type="button" onClick={this.handleSubmit}/>`
-* 非受控组件可以不使用事件捕获获取值，使用 *引用*方式也可获取值：`<input ref="userEmail" />`
+* 非受控组件可以`不使用事件捕获`获取值，使用 *引用*方式也可获取值：`<input ref="userEmail" />`
 * 由于非控组件没有value值设定初始化值，则可通过`defaultValue=""`来设置初始化值。
 * 下面是非受控组件的实现方式：
 
@@ -187,11 +188,11 @@ class Content extends React.Component {
     }
 }
 ```
-推荐使用受控组件方式创建表单，本例子完整代码见：[std5/uncontrolled](../std/std5/uncontrolled)
+推荐使用`受控组件方式`创建表单，本例子完整代码见：[std5/uncontrolled](../std/std5/uncontrolled)
 
 #### 2. 扩展组件
 
-##### 2.1 组件默认属性与属性类型提示
+##### 2.1 组件默认属性(defaultProps)与属性类型(propTypes)提示
 * 创建组件的基本方法我们已经掌握，为了更好的开发，我们还可以利用React为我们提供的 *组件默认属性* 和 *属性类型提示* 两个功能来增加代码的容错性和开发环境的友好提示。
 * 我们在组件类上添加`defaultProps={}`来设置组件的默认属性，当别人忘记传入必须的属性值时，组件会显示`defaultProps`中的默认值。
 * 我们在开发阶段在组件类上添加`propTypes={}`来设置属性值的类型，当类型不匹配时，会在浏览器`Console`中发出提示`Warning`。
@@ -226,16 +227,15 @@ Button.propTypes = {//设置属性类型提示
   }
 }
 ```
-* 值的注意的是propTypes的类型定义来自独立的包（prop-types），需要单独引用入html中。
+* 值的注意的是propTypes的类型定义来自`独立的包（prop-types）`，需要单独引用入html中。
 
 执行结果：
 
 <img src="./images/p1_14.png" width="80%" />
 
-##### 2.2 渲染子组件
+##### 2.2 渲染子组件(this.props.children)
 * 子组件通过`this.props.children`渲染，父组件可以设计成通用的`<div>包装器`，它可以有很多样式，布局，交互事件等等。对于里面的子组件是完全松耦合的，子组件可以各种各样。
 * `this.props.children`属性当含多个子组件时，可以通过`React.Children.count(this.props.children)`获取子组件数量，再通过`{this.props.children[0]}`方式访问。
-
 
 ```javascript
 const FancyBorder = props => {//抽象组件FancyBorder，根据属性显示不同颜色
@@ -295,7 +295,7 @@ Content中有两个Dialog组件，它们的子组件分别是不同的元素组�
 <img src="./images/p1_15.png" width="80%" />
 
 ##### 2.3 高阶组件（Higher-Order Component）
-* 高阶组件的定义类似函数，使用另一个组件作为参数，此参数由该组件继承与HOC
+* 高阶组件的定义类似函数，使用另一个组件作为参数，此参数由该组件继承于HOC
 * 下面的例子是有3个已存在的展示组件，需要给它们增加公共的属性与事件响应，所以添加一个高阶组件来做这个事。
 
 ```javascript
