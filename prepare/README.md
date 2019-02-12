@@ -11,11 +11,23 @@
 * JSX --> 编译器（babel）--> JS --> 浏览器
 
 #### 2. 环境准备
-* Node
+* Node 
+    * [nvm-windows](https://github.com/coreybutler/nvm-windows/releases)
+    * [nvm](https://github.com/creationix/nvm)
+
+<img src="./images/nvm.jpg" width="20%" height="auto">
+
+<img src="./images/nvm2.jpg" width="50%" height="auto">
+
+<img src="./images/nvm3.jpg" width="50%" height="auto">
+
 * npm
 * react
 * babel
 * webpack
+
+
+
 
 #### 3. 其他注意事项
 * SPA 架构
